@@ -29,7 +29,7 @@ class BishopMoveCalc implements PieceMoveCalc {
                     col += dCol;
 
                     // Check if the new position is within the bounds of the board
-                    if (row < 0 || row > 7 || col < 0 || col > 7) {
+                    if (row < 1 || row > 8 || col < 1 || col > 8) {
                         break;
                     }
                     moves.add(new ChessMove(position, new ChessPosition(row, col), null));
