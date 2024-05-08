@@ -31,7 +31,7 @@ public class ChessPiece {
             case QUEEN:
                 return new QueenMoveCalc();
             case KNIGHT:
-                break;
+                return new KnightMoveCalc();
             case ROOK:
                 return new RookMoveCalc();
             case PAWN:
