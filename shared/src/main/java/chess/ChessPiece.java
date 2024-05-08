@@ -16,11 +16,11 @@ class BishopMoveCalc implements PieceMoveCalc {
         Collection<ChessMove> moves = new ArrayList<>();
         int[] directions = {-1, 1};
 
-        int startRow = position.getRow();
-        int startCol = position.getColumn();
+        int startRow = position.getRow() -1;
+        int startCol = position.getColumn() -1;
 
         //bishops color
-        ChessPiece MyPiece = board.getPiece(new ChessPosition(startRow, startCol));
+        ChessPiece MyPiece = board.getPiece(new ChessPosition(startRow +1, startCol +1));
         ChessGame.TeamColor MyPieceColor = MyPiece.getTeamColor();
 
 
@@ -34,21 +34,21 @@ class BishopMoveCalc implements PieceMoveCalc {
                     col += dCol;
 
                     // Check if the new position is within the bounds of the board
-                    if (row < 1 || row > 8 || col < 1 || col > 8) {
+                    if (row < 0 || row > 7 || col < 0 || col > 7) {
                         break;
                     }
 
                     ChessPiece pieceAtPosition = board.getPiece(new ChessPosition(row, col));
 
-                    if (pieceAtPosition != null) {
+                    if (pieceAtPosition != null &&  pieceAtPosition != MyPiece) {
                         // If it's an enemy piece, add the move (capture)
                         if (pieceAtPosition.getTeamColor() != MyPieceColor) {
-                            moves.add(new ChessMove(position, new ChessPosition(row, col), null));
+                            moves.add(new ChessMove(position, new ChessPosition(row + 1, col +1), null));
                         }
                         // Stop adding moves in this direction
                         break;
                     }
-                    moves.add(new ChessMove(position, new ChessPosition(row, col), null));
+                    moves.add(new ChessMove(position, new ChessPosition(row + 1, col + 1), null));
                 }
             }
         }

@@ -31,7 +31,7 @@ public class ChessMove {
     public String toString() {
         return "ChessMove{" +
                 //"startPosition=" + startPosition +
-                ", endPosition=" + endPosition +
+                ", EP=" + endPosition +
                 //", promotionPiece=" + promotionPiece +
                 '}';
     }
@@ -41,12 +41,12 @@ public class ChessMove {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ChessMove chessMove = (ChessMove) o;
-        return Objects.equals(startPosition, chessMove.startPosition) && Objects.equals(endPosition, chessMove.endPosition) && promotionPiece == chessMove.promotionPiece;
+        return Objects.equals(getStartPosition(), chessMove.getStartPosition()) && Objects.equals(getEndPosition(), chessMove.getEndPosition()) && getPromotionPiece() == chessMove.getPromotionPiece();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(startPosition, endPosition, promotionPiece);
+        return Objects.hash(getStartPosition(), getEndPosition(), getPromotionPiece());
     }
 
     /**
