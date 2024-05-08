@@ -1,10 +1,8 @@
 package chess;
 
-import chess.moveCalc.BishopMoveCalc;
-import chess.moveCalc.KingMoveCalc;
-import chess.moveCalc.PieceMoveCalc;
-import chess.moveCalc.RookMoveCalc;
+import chess.moveCalc.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -31,7 +29,7 @@ public class ChessPiece {
             case KING:
                 return new KingMoveCalc();
             case QUEEN:
-                break;
+                return new QueenMoveCalc();
             case KNIGHT:
                 break;
             case ROOK:
