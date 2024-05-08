@@ -1,103 +1,11 @@
 package chess;
 
-import java.util.ArrayList;
+import chess.moveCalc.BishopMoveCalc;
+import chess.moveCalc.KingMoveCalc;
+import chess.moveCalc.PieceMoveCalc;
+import chess.moveCalc.RookMoveCalc;
+
 import java.util.Collection;
-/** I am going to create an interface for calculating piece moves
- *
- */
-
-interface PieceMoveCalc {
-    Collection<ChessMove> calculateMoves(ChessBoard board, ChessPosition position);
-    }
-
-class BishopMoveCalc implements PieceMoveCalc {
-    @Override
-    public Collection<ChessMove> calculateMoves(ChessBoard board, ChessPosition position) {
-        Collection<ChessMove> moves = new ArrayList<>();
-        int[] directions = {-1, 1};
-
-        int startRow = position.getRow();
-        int startCol = position.getColumn();
-
-        //bishops color
-        ChessPiece MyPiece = board.getPiece(new ChessPosition(startRow, startCol));
-        ChessGame.TeamColor MyPieceColor = MyPiece.getTeamColor();
-
-
-        for (int dRow : directions) {
-            for (int dCol : directions) {
-                int row = startRow;
-                int col = startCol;
-
-                while (true) {
-                    row += dRow;
-                    col += dCol;
-
-                    // Check if the new position is within the bounds of the board
-                    if (row < 1 || row > 8 || col < 1 || col > 8) {
-                        break;
-                    }
-
-                    ChessPiece pieceAtPosition = board.getPiece(new ChessPosition(row, col));
-
-                    if (pieceAtPosition != null &&  pieceAtPosition != MyPiece) {
-                        // If it's an enemy piece, add the move (capture)
-                        if (pieceAtPosition.getTeamColor() != MyPieceColor) {
-                            moves.add(new ChessMove(position, new ChessPosition(row, col), null));
-                        }
-                        // Stop adding moves in this direction
-                        break;
-                    }
-                    moves.add(new ChessMove(position, new ChessPosition(row, col), null));
-                }
-            }
-        }
-        return moves;
-    }
-}
-
-class RookMoveCalc implements PieceMoveCalc {
-    @Override
-    public Collection<ChessMove> calculateMoves(ChessBoard board, ChessPosition position) {
-        Collection<ChessMove> moves = new ArrayList<>();
-        int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
-
-        int startRow = position.getRow();
-        int startCol = position.getColumn();
-
-        //rooks color
-        ChessPiece MyPiece = board.getPiece(new ChessPosition(startRow, startCol));
-        ChessGame.TeamColor MyPieceColor = MyPiece.getTeamColor();
-
-        for (int[] direction : directions) {
-            int row = startRow;
-            int col = startCol;
-
-            while (true) {
-                row += direction[0];
-                col += direction[1];
-
-                // Check if the new position is within the bounds of the board
-                if (row < 1 || row > 8 || col < 1 || col > 8) {
-                    break;
-                }
-
-                ChessPiece pieceAtPosition = board.getPiece(new ChessPosition(row, col));
-
-                if (pieceAtPosition != null && pieceAtPosition != MyPiece) {
-                    // If it's an enemy piece, add the move (capture)
-                    if (pieceAtPosition.getTeamColor() != MyPieceColor) {
-                        moves.add(new ChessMove(position, new ChessPosition(row, col), null));
-                    }
-                    // Stop adding moves in this direction
-                    break;
-                }
-                moves.add(new ChessMove(position, new ChessPosition(row, col), null));
-            }
-        }
-        return moves;
-    }
-}
 
 /**
  * Represents a single chess piece
@@ -121,7 +29,7 @@ public class ChessPiece {
             case BISHOP:
                 return new BishopMoveCalc();
             case KING:
-                break;
+                return new KingMoveCalc();
             case QUEEN:
                 break;
             case KNIGHT:
