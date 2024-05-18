@@ -1,6 +1,9 @@
 package chess;
 
+import java.time.temporal.ChronoField;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * For a class that can manage a chess game, making moves on a board
@@ -70,9 +73,35 @@ public class ChessGame {
      */
     public boolean isInCheck(TeamColor teamColor) {
         ChessPosition KingPos = findPosition(board, teamColor, ChessPiece.PieceType.KING);
-        Collection<ChessMove> enemyMoves;
+        Collection<ChessMove> enemyMoves = findEnemyMoves(board, teamColor);
+        Collection<ChessPosition> endpoints = new ArrayList<>();
+        boolean CheckOrNah = false;
 
-        return true;
+        for (ChessMove move : enemyMoves){
+            endpoints.add(move.getEndPosition());
+        }
+
+        for (ChessPosition point : endpoints){
+            if (point.equals(KingPos)){
+                CheckOrNah = true;
+            }
+        }
+
+
+        return CheckOrNah;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChessGame chessGame = (ChessGame) o;
+        return Objects.deepEquals(getBoard(), chessGame.getBoard()) && getTeamTurn() == chessGame.getTeamTurn();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getBoard(), getTeamTurn());
     }
 
     /**
@@ -82,7 +111,9 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      */
     public boolean isInCheckmate(TeamColor teamColor) {
-        throw new RuntimeException("Not implemented");
+        boolean CheckStatus = isInCheck(teamColor);
+        ChessPosition KingPos = findPosition(board, teamColor, ChessPiece.PieceType.KING);
+
     }
 
     /**
@@ -114,17 +145,32 @@ public class ChessGame {
         return board;
     }
 
-    public ChessPosition findPosition(ChessBoard board,ChessGame.TeamColor teamColor, ChessPiece.PieceType type) {
+    public ChessPosition findPosition(ChessBoard board, ChessGame.TeamColor teamColor, ChessPiece.PieceType type) {
         for (int row = 1; row < 9; row++) {
             for (int col = 1; col < 9; col++) {
                 ChessPiece piece = board.getPiece(new ChessPosition(row, col));
-                if (piece != null && piece.getPieceType() == type && piece.getTeamColor()== teamColor) {
+                if (piece != null && piece.getPieceType() == type && piece.getTeamColor() == teamColor) {
                     return new ChessPosition(row, col);
                 }
             }
         }
         return null; // Piece not found
     }
+
+    public Collection<ChessMove> findEnemyMoves(ChessBoard board, ChessGame.TeamColor teamColor) {
+        Collection<ChessMove> enemyMoves = new ArrayList<>();
+        for (int row = 1; row < 9; row++) {
+            for (int col = 1; col < 9; col++) {
+                ChessPosition currentPosition = new ChessPosition(row, col);
+                ChessPiece piece = board.getPiece(currentPosition);
+                if (piece != null && piece.getTeamColor() != teamColor) {
+                    enemyMoves.addAll(piece.pieceMoves(board, currentPosition));
+                }
+            }
+        }
+        return enemyMoves;
+    }
+
 
 
 
