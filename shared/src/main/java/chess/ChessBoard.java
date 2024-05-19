@@ -1,7 +1,6 @@
 package chess;
 
 import java.util.Arrays;
-import java.util.Objects;
 
 /**
  * A chessboard that can hold and rearrange chess pieces.
@@ -61,7 +60,15 @@ public class ChessBoard {
         if (position.getRow() >8 || position.getColumn() >8 || position.getRow() <1 || position.getColumn() <1) {
             return null;
         }
+
+
+
+
         return squares[position.getRow() -1][position.getColumn() -1];
+    }
+
+    public void removePiece(ChessPosition position) {
+        squares[position.getRow() -1][position.getColumn() -1] = null;
     }
 
     /**
@@ -105,8 +112,8 @@ public class ChessBoard {
 
     public ChessBoard deepCopy() {
         ChessBoard copy = new ChessBoard();
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
+        for (int row = 1; row < 9; row++) {
+            for (int col = 1; col < 9; col++) {
                 ChessPiece piece = this.getPiece(new ChessPosition(row, col));
                 if (piece != null) {
                     copy.addPiece(new ChessPosition(row, col), new ChessPiece(piece.getTeamColor(),piece.getPieceType()));

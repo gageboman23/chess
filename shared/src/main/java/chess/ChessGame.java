@@ -59,8 +59,13 @@ public class ChessGame {
 
         for (ChessMove move : AllMoves) {
             ChessBoard TempBoard = board.deepCopy();
+
+            //^^ running into issues because I dont know if I need a copy of just the board or i need to copy the game?
+            // I set up the getters and setters w TA and they said this.board works fine, but then i cant access my temp boards for move checking.
+            // When I run my isInCheck function, it doesnt test moves, it just returns the status of the OG board. Looking into it later.
+
             TempBoard.addPiece(new ChessPosition(move.getEndPosition().getRow(), move.getEndPosition().getColumn()),TempBoard.getPiece(move.getStartPosition()));
-            TempBoard.addPiece(new ChessPosition(move.getStartPosition().getRow(), move.getStartPosition().getColumn()), new ChessPiece(null, null));
+            TempBoard.removePiece(new ChessPosition(move.getStartPosition().getRow(), move.getStartPosition().getColumn()));
 
             if (isInCheckAfterMove(TempBoard, board.getPiece(startPosition).getTeamColor())){
                 validMoves.remove(move);
@@ -90,7 +95,7 @@ public class ChessGame {
             throw new InvalidMoveException("Sorry Suckaaaaa");
         }
         board.addPiece(new ChessPosition(move.getEndPosition().getRow(), move.getEndPosition().getColumn()),board.getPiece(move.getStartPosition()));
-        board.addPiece(new ChessPosition(move.getStartPosition().getRow(), move.getStartPosition().getColumn()), new ChessPiece(null, null));
+        board.removePiece(new ChessPosition(move.getStartPosition().getRow(), move.getStartPosition().getColumn()));
 
     }
 
@@ -113,6 +118,7 @@ public class ChessGame {
         for (ChessPosition point : endpoints){
             if (point.equals(KingPos)){
                 CheckOrNah = true;
+                break;
             }
         }
 
@@ -144,47 +150,7 @@ public class ChessGame {
         if (!isInCheck(teamColor)) {
             return false; // The king is not in check, hence not in checkmate
         }
-
-        // Get the position of the king
-        ChessPosition kingPosition = findPosition(board, teamColor, ChessPiece.PieceType.KING);
-
-        // Get all possible moves of the king
-        Collection<ChessMove> kingMoves = board.getPiece(kingPosition).pieceMoves(board, kingPosition);
-
-        // Check if the king can move to a safe position
-        for (ChessMove move : kingMoves) {
-            ChessPosition newKingPosition = move.getEndPosition();
-            ChessBoard newBoard = board.deepCopy(); // Hypothetical move
-            try {
-                newBoard = makeMove(new ChessMove(kingPosition, newKingPosition, null));
-            } catch (InvalidMoveException e) {
-                throw new RuntimeException(e);
-            }
-            if (!isInCheckAfterMove(newBoard, teamColor, kingPosition, newKingPosition)) {
-                return false; // The king can move to a safe position
-            }
-        }
-
-        // Get all possible enemy moves to check if the king can be captured or blocked
-        Collection<ChessMove> enemyMoves = findEnemyMoves(board, teamColor);
-        for (ChessMove enemyMove : enemyMoves) {
-            ChessPosition enemyMoveEnd = enemyMove.getEndPosition();
-            if (enemyMoveEnd.equals(kingPosition)) {
-                // Check if any piece of the current team can capture the enemy piece or block the attack
-                Collection<ChessMove> teamMoves = findTeamMoves(board, teamColor);
-                for (ChessMove teamMove : teamMoves) {
-                    ChessPosition teamMoveEnd = teamMove.getEndPosition();
-                    if (teamMoveEnd.equals(enemyMove.getStartPosition()) || canBlock(teamMove, kingPosition, enemyMove)) {
-                        ChessBoard newBoard = board.makeMove(teamMove.getStartPosition(), teamMoveEnd); // Hypothetical move
-                        if (!isInCheckAfterMove(newBoard, teamColor, teamMove.getStartPosition(), teamMoveEnd)) {
-                            return false; // A piece can capture the enemy piece or block the check
-                        }
-                    }
-                }
-            }
-        }
-
-        return true; // The king cannot escape check
+        return true;
     }
 
     /**
@@ -250,8 +216,8 @@ public class ChessGame {
         Collection<ChessMove> teamMoves = new ArrayList<>();
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
-                ChessPiece piece = board.getPiece(row, col);
-                if (piece != null && piece.getColor() == teamColor) {
+                ChessPiece piece = board.getPiece(new ChessPosition(row, col));
+                if (piece != null && piece.getTeamColor() == teamColor) {
                     ChessPosition position = new ChessPosition(row, col);
                     teamMoves.addAll(piece.pieceMoves(board, position));
                 }
