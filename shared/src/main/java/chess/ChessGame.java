@@ -1,6 +1,5 @@
 package chess;
 
-import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
@@ -111,10 +110,12 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      */
     public boolean isInCheckmate(TeamColor teamColor) {
-        boolean CheckStatus = isInCheck(teamColor);
-        ChessPosition KingPos = findPosition(board, teamColor, ChessPiece.PieceType.KING);
-
+        // not sure if I need this yet.     boolean CheckStatus = isInCheck(teamColor);
+        ChessPosition KingPosition = findPosition(board, teamColor, ChessPiece.PieceType.KING);
+        Collection<ChessMove> KingMoves = board.getPiece(KingPosition).pieceMoves(board, KingPosition);
     }
+
+
 
     /**
      * Determines if the given team is in stalemate, which here is defined as having
@@ -145,7 +146,7 @@ public class ChessGame {
         return board;
     }
 
-    public ChessPosition findPosition(ChessBoard board, ChessGame.TeamColor teamColor, ChessPiece.PieceType type) {
+    private ChessPosition findPosition(ChessBoard board, ChessGame.TeamColor teamColor, ChessPiece.PieceType type) {
         for (int row = 1; row < 9; row++) {
             for (int col = 1; col < 9; col++) {
                 ChessPiece piece = board.getPiece(new ChessPosition(row, col));
@@ -157,7 +158,7 @@ public class ChessGame {
         return null; // Piece not found
     }
 
-    public Collection<ChessMove> findEnemyMoves(ChessBoard board, ChessGame.TeamColor teamColor) {
+    private Collection<ChessMove> findEnemyMoves(ChessBoard board, ChessGame.TeamColor teamColor) {
         Collection<ChessMove> enemyMoves = new ArrayList<>();
         for (int row = 1; row < 9; row++) {
             for (int col = 1; col < 9; col++) {
@@ -170,6 +171,8 @@ public class ChessGame {
         }
         return enemyMoves;
     }
+
+
 
 
 
