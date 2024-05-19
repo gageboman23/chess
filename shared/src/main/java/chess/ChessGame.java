@@ -51,7 +51,23 @@ public class ChessGame {
      * startPosition
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
-        throw new RuntimeException("Not implemented");
+        if (board.getPiece(startPosition) == null) {
+            return null;
+        }
+        Collection<ChessMove> AllMoves = board.getPiece(startPosition).pieceMoves(board, startPosition);
+        Collection<ChessMove> validMoves = new ArrayList<>(AllMoves);
+
+        for (ChessMove move : AllMoves) {
+            ChessBoard TempBoard = board.deepCopy();
+            TempBoard.addPiece(new ChessPosition(move.getEndPosition().getRow(), move.getEndPosition().getColumn()),TempBoard.getPiece(move.getStartPosition()));
+            TempBoard.addPiece(new ChessPosition(move.getStartPosition().getRow(), move.getStartPosition().getColumn()), new ChessPiece(null, null));
+
+            if (isInCheckAfterMove(TempBoard, board.getPiece(startPosition).getTeamColor())){
+                validMoves.remove(move);
+            }
+
+        }
+        return validMoves;
     }
 
     /**
@@ -61,7 +77,21 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
-        throw new RuntimeException("Not implemented");
+        boolean isValid = false;
+        Collection<ChessMove> validMoves = validMoves(move.getStartPosition());
+
+        for (ChessMove Vmove : validMoves){
+            if (move.equals(Vmove)){
+                isValid = true;
+                break;
+            }
+        }
+        if (!isValid){
+            throw new InvalidMoveException("Sorry Suckaaaaa");
+        }
+        board.addPiece(new ChessPosition(move.getEndPosition().getRow(), move.getEndPosition().getColumn()),board.getPiece(move.getStartPosition()));
+        board.addPiece(new ChessPosition(move.getStartPosition().getRow(), move.getStartPosition().getColumn()), new ChessPiece(null, null));
+
     }
 
     /**
@@ -110,12 +140,52 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      */
     public boolean isInCheckmate(TeamColor teamColor) {
-        // not sure if I need this yet.     boolean CheckStatus = isInCheck(teamColor);
-        ChessPosition KingPosition = findPosition(board, teamColor, ChessPiece.PieceType.KING);
-        Collection<ChessMove> KingMoves = board.getPiece(KingPosition).pieceMoves(board, KingPosition);
+        // Check if the king is in check
+        if (!isInCheck(teamColor)) {
+            return false; // The king is not in check, hence not in checkmate
+        }
+
+        // Get the position of the king
+        ChessPosition kingPosition = findPosition(board, teamColor, ChessPiece.PieceType.KING);
+
+        // Get all possible moves of the king
+        Collection<ChessMove> kingMoves = board.getPiece(kingPosition).pieceMoves(board, kingPosition);
+
+        // Check if the king can move to a safe position
+        for (ChessMove move : kingMoves) {
+            ChessPosition newKingPosition = move.getEndPosition();
+            ChessBoard newBoard = board.deepCopy(); // Hypothetical move
+            try {
+                newBoard = makeMove(new ChessMove(kingPosition, newKingPosition, null));
+            } catch (InvalidMoveException e) {
+                throw new RuntimeException(e);
+            }
+            if (!isInCheckAfterMove(newBoard, teamColor, kingPosition, newKingPosition)) {
+                return false; // The king can move to a safe position
+            }
+        }
+
+        // Get all possible enemy moves to check if the king can be captured or blocked
+        Collection<ChessMove> enemyMoves = findEnemyMoves(board, teamColor);
+        for (ChessMove enemyMove : enemyMoves) {
+            ChessPosition enemyMoveEnd = enemyMove.getEndPosition();
+            if (enemyMoveEnd.equals(kingPosition)) {
+                // Check if any piece of the current team can capture the enemy piece or block the attack
+                Collection<ChessMove> teamMoves = findTeamMoves(board, teamColor);
+                for (ChessMove teamMove : teamMoves) {
+                    ChessPosition teamMoveEnd = teamMove.getEndPosition();
+                    if (teamMoveEnd.equals(enemyMove.getStartPosition()) || canBlock(teamMove, kingPosition, enemyMove)) {
+                        ChessBoard newBoard = board.makeMove(teamMove.getStartPosition(), teamMoveEnd); // Hypothetical move
+                        if (!isInCheckAfterMove(newBoard, teamColor, teamMove.getStartPosition(), teamMoveEnd)) {
+                            return false; // A piece can capture the enemy piece or block the check
+                        }
+                    }
+                }
+            }
+        }
+
+        return true; // The king cannot escape check
     }
-
-
 
     /**
      * Determines if the given team is in stalemate, which here is defined as having
@@ -170,6 +240,31 @@ public class ChessGame {
             }
         }
         return enemyMoves;
+    }
+
+    private boolean isInCheckAfterMove(ChessBoard board, TeamColor teamColor) {
+        return isInCheck(teamColor);
+    }
+
+    private Collection<ChessMove> findTeamMoves(ChessBoard board, TeamColor teamColor) {
+        Collection<ChessMove> teamMoves = new ArrayList<>();
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                ChessPiece piece = board.getPiece(row, col);
+                if (piece != null && piece.getColor() == teamColor) {
+                    ChessPosition position = new ChessPosition(row, col);
+                    teamMoves.addAll(piece.pieceMoves(board, position));
+                }
+            }
+        }
+        return teamMoves;
+    }
+
+    private boolean canBlock(ChessMove teamMove, ChessPosition kingPosition, ChessMove enemyMove) {
+        // Logic to determine if a team move can block the enemy move
+        ChessPosition teamMoveEnd = teamMove.getEndPosition();
+        // Implement specific logic for checking block conditions
+        return false; // Placeholder, need specific block logic
     }
 
 

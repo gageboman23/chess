@@ -101,6 +101,18 @@ public class ChessBoard {
         addPiece(new ChessPosition(7,6), new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN));
         addPiece(new ChessPosition(7,7), new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN));
         addPiece(new ChessPosition(7,8), new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN));
+    }
 
+    public ChessBoard deepCopy() {
+        ChessBoard copy = new ChessBoard();
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                ChessPiece piece = this.getPiece(new ChessPosition(row, col));
+                if (piece != null) {
+                    copy.addPiece(new ChessPosition(row, col), new ChessPiece(piece.getTeamColor(),piece.getPieceType()));
+                }
+            }
+        }
+        return copy;
     }
 }
