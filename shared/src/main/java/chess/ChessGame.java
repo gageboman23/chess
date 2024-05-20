@@ -57,7 +57,7 @@ public class ChessGame {
             return null;
         } else {
             ChessPiece piece = board.getPiece(startPosition);
-            Collection<ChessMove> AllMoves = board.getPiece(startPosition).pieceMoves(board, startPosition);
+            Collection<ChessMove> AllMoves = piece.pieceMoves(board, startPosition);
             Collection<ChessMove> validMoves = new ArrayList<>(AllMoves);
             validMoves.addAll(AllMoves);
 
@@ -144,7 +144,7 @@ public class ChessGame {
      */
     public boolean isInCheck(TeamColor teamColor) {
         ChessPosition KingPos = findPosition(board, teamColor, ChessPiece.PieceType.KING);
-        Collection<ChessMove> enemyMoves = findEnemyMoves(getBoard(), teamColor);
+        Collection<ChessMove> enemyMoves = findValidEnemyMoves(getBoard(), teamColor);
         Collection<ChessPosition> endpoints = new ArrayList<>();
         boolean CheckOrNah = false;
 
@@ -183,7 +183,7 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      */
     public boolean isInCheckmate(TeamColor teamColor) {
-        Collection<ChessMove> teamMoves = findTeamMoves(getBoard(), teamColor);
+        Collection<ChessMove> teamMoves = findValidTeamMoves(getBoard(), teamColor);
         // Check if the king is in check
         if(isInCheck(teamColor)){
             for (ChessMove move : teamMoves){
@@ -210,8 +210,12 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
-        Collection<ChessMove> teamMoves = findTeamMoves(getBoard(), teamColor);
-        ;
+        Collection<ChessMove> teamMoves = findValidTeamMoves(getBoard(), teamColor);
+//        if (!isInCheck(teamColor)){
+//            for (ChessMove move : teamMoves);
+//            }
+
+        return false;
     }
 
     /**
@@ -243,38 +247,4 @@ public class ChessGame {
         }
         return null; // Piece not found
     }
-
-    private Collection<ChessMove> findEnemyMoves(ChessBoard board, ChessGame.TeamColor teamColor) {
-        Collection<ChessMove> enemyMoves = new ArrayList<>();
-        for (int row = 1; row < 9; row++) {
-            for (int col = 1; col < 9; col++) {
-                ChessPosition currentPosition = new ChessPosition(row, col);
-                ChessPiece piece = board.getPiece(currentPosition);
-                if (piece != null && piece.getTeamColor() != teamColor) {
-                    enemyMoves.addAll(piece.pieceMoves(board, currentPosition));
-                }
-            }
-        }
-        return enemyMoves;
-    }
-
-    private Collection<ChessMove> findTeamMoves(ChessBoard board, TeamColor teamColor) {
-        Collection<ChessMove> teamMoves = new ArrayList<>();
-        for (int row = 1; row < 9; row++) {
-            for (int col = 1; col < 9; col++) {
-                ChessPiece piece = board.getPiece(new ChessPosition(row, col));
-                if (piece != null && piece.getTeamColor() == teamColor) {
-                    ChessPosition position = new ChessPosition(row, col);
-                    teamMoves.addAll(piece.pieceMoves(board, position));
-                }
-            }
-        }
-        return teamMoves;
-    }
-
-
-
-
-
-
 }
