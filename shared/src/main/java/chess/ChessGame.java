@@ -18,6 +18,7 @@ public class ChessGame {
     public ChessGame() {
         this.board = new ChessBoard();
         this.teamTurn = TeamColor.WHITE;
+        board.resetBoard();
     }
 
     /**
@@ -58,9 +59,7 @@ public class ChessGame {
             ChessPiece piece = board.getPiece(startPosition);
             Collection<ChessMove> AllMoves = board.getPiece(startPosition).pieceMoves(board, startPosition);
             Collection<ChessMove> validMoves = new ArrayList<>(AllMoves);
-            for (ChessMove move : AllMoves) {
-                validMoves.add(move);
-            }
+            validMoves.addAll(AllMoves);
 
             ChessGame testGame = new ChessGame();
             ChessBoard boardCopy = board.deepCopy();
@@ -211,7 +210,8 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
-        throw new RuntimeException("Not implemented");
+        Collection<ChessMove> teamMoves = findTeamMoves(getBoard(), teamColor);
+        ;
     }
 
     /**
@@ -258,10 +258,6 @@ public class ChessGame {
         return enemyMoves;
     }
 
-    private boolean isInCheckAfterMove(ChessBoard board, TeamColor teamColor) {
-        return isInCheck(teamColor);
-    }
-
     private Collection<ChessMove> findTeamMoves(ChessBoard board, TeamColor teamColor) {
         Collection<ChessMove> teamMoves = new ArrayList<>();
         for (int row = 1; row < 9; row++) {
@@ -274,13 +270,6 @@ public class ChessGame {
             }
         }
         return teamMoves;
-    }
-
-    private boolean canBlock(ChessMove teamMove, ChessPosition kingPosition, ChessMove enemyMove) {
-        // Logic to determine if a team move can block the enemy move
-        ChessPosition teamMoveEnd = teamMove.getEndPosition();
-        // Implement specific logic for checking block conditions
-        return false; // Placeholder, need specific block logic
     }
 
 
