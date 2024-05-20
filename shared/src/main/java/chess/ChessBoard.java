@@ -110,16 +110,14 @@ public class ChessBoard {
         addPiece(new ChessPosition(7,8), new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN));
     }
 
-    public ChessBoard deepCopy() {
-        ChessBoard copy = new ChessBoard();
-        for (int row = 1; row < 9; row++) {
-            for (int col = 1; col < 9; col++) {
-                ChessPiece piece = this.getPiece(new ChessPosition(row, col));
-                if (piece != null) {
-                    copy.addPiece(new ChessPosition(row, col), new ChessPiece(piece.getTeamColor(),piece.getPieceType()));
-                }
+    public ChessBoard deepCopy(){
+        ChessBoard boardCopy = new ChessBoard();
+        for (int row = 1; row < 9; row++){
+            for (int col = 1; col < 9; col++){
+                ChessPosition pos = new ChessPosition(row, col);
+                boardCopy.addPiece(pos, getPiece(pos));
             }
         }
-        return copy;
+        return boardCopy;
     }
 }
