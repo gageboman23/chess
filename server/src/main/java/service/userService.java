@@ -6,10 +6,10 @@ import model.UserData;
 public class userService {
 
     public AuthData register(UserData user) {
-
+    return null;
     }
     public AuthData login(UserData user) {
-
+    return null;
     }
     public void logout(UserData user) {}
 }
