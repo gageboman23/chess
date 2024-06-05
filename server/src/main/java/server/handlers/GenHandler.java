@@ -31,7 +31,7 @@ public class GenHandler {
         }
     }
 
-    public Object evalException(Request req, Response res, Exception e){
+    public Object findException(Request req, Response res, Exception e){
         ErrorResponse response = new ErrorResponse(e.getMessage());
         if (e.getMessage().equals("Error: bad request")){
             res.status(400);

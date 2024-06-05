@@ -26,7 +26,7 @@ public class RegisterHandler extends GenHandler{
             var response = new RegisterResponse(username, authData.authToken());
             return response.toJSon();
         } catch (Exception e){
-            return evalException(req, res, e);
+            return findException(req, res, e);
         }
     }
 }

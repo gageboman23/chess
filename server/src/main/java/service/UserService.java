@@ -5,6 +5,8 @@ import dataaccess.UserDAO;
 import model.AuthData;
 import model.UserData;
 
+import java.util.Objects;
+
 public class UserService {
     public UserDAO userDAO;
     // not quite sure if this is complete but I think its a start
@@ -34,5 +36,19 @@ public class UserService {
 
     public void logout(UserData user) throws DataAccessException {
         userDAO.clear();
+    }
+
+    public boolean verifyUser(UserData userData) throws DataAccessException {
+        String username = userData.username();
+        String password = userData.password();
+        UserData existingUser = userDAO.getUser(username);
+        if (existingUser == null) {
+            return false;
+        } else if (Objects.equals(password, existingUser.password())) {
+            return true;
+        } else {
+            throw new DataAccessException("Error: unauthorized");
+        }
+
     }
 }
