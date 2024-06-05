@@ -10,8 +10,7 @@ public class AuthService {
     public static AuthDAO authDAO;
 
     public AuthData newToken(String username) throws DataAccessException{
-        AuthData authData = authDAO.createAuth(username);
-        return authData;
+        return authDAO.createAuth(username);
     }
 
     public AuthData getAuthData(String authToken) throws DataAccessException{
