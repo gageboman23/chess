@@ -4,7 +4,6 @@ import dataaccess.*;
 import model.UserData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import service.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -45,15 +44,23 @@ public class UserServiceTest {
     }
 
     @Test
-    void verifyUserTest() throws DataAccessException {
+    void verifyUser() throws DataAccessException {
         var user1 = new UserData("user1", "pass1", "email1");
         userService.register(user1);
         assertTrue(userService.verifyUser(user1));
     }
 
     @Test
-    void verifyUserTestFail() throws DataAccessException {
+    void verifyUserTest() throws DataAccessException {
         var user2 = new UserData("user2", "pass2", "email2");
         assertFalse(userService.verifyUser(user2));
+    }
+
+    @Test
+    void clearTest() throws DataAccessException {
+        assertDoesNotThrow(() -> {
+            userService.clear();
+        });
+        assertTrue(userService.userDAO.getAllUsers().isEmpty());
     }
 }

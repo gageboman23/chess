@@ -25,6 +25,11 @@ public class MemUserDAO implements UserDAO {
     }
 
     @Override
+    public HashMap<String, UserData> getAllUsers() throws DataAccessException {
+        return userDataHashMap;
+    }
+
+    @Override
     public void clear() {
         userDataHashMap.clear();
     }
