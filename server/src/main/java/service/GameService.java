@@ -9,7 +9,15 @@ import model.GameData;
 import java.util.Collection;
 
 public class GameService {
-    public static GameDAO gameDAO = new MemGameDAO();
+    public static GameDAO gameDAO;
+
+    public GameService() throws DataAccessException {
+        try {
+            gameDAO = new MemGameDAO();
+        } catch (Exception e) {
+            throw new DataAccessException(e.getMessage());
+        }
+    }
 
     public Collection<GameData> listGames() throws DataAccessException {
         return gameDAO.listGames();

@@ -19,12 +19,23 @@ public class MemAuthDAO implements AuthDAO {
 
     @Override
     public AuthData getAuth(String token) throws DataAccessException {
+        if (authDataHashMap.get(token) == null) {
+            throw new DataAccessException("unauthorized");
+        }
         return authDataHashMap.get(token);
     }
 
     @Override
     public void deleteAuth(String token) throws DataAccessException {
-        authDataHashMap.remove(token);
+        if (authDataHashMap.containsKey(token)){
+            authDataHashMap.remove(token);
+        } else {
+            throw new DataAccessException("unauthorized");
+        }
+
+        if (authDataHashMap.get(token) != null) {
+            throw new DataAccessException("unauthorized");
+        }
 
     }
 
