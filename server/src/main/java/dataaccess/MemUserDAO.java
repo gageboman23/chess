@@ -9,7 +9,7 @@ public class MemUserDAO implements UserDAO {
 
     @Override
     public void createUser(UserData u) throws DataAccessException {
-        if (u.password() == null || u.password() == null) {
+        if (u.username() == null || u.password() == null) {
             throw new DataAccessException("Invalid user data");
         } else if (userDataHashMap.containsKey(u.username())) {
             throw new DataAccessException("User already exists");

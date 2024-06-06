@@ -1,6 +1,7 @@
 package service;
 
 import dataaccess.DataAccessException;
+import dataaccess.MemUserDAO;
 import dataaccess.UserDAO;
 import model.AuthData;
 import model.UserData;
@@ -8,17 +9,17 @@ import model.UserData;
 import java.util.Objects;
 
 public class UserService {
-    public UserDAO userDAO;
+    public UserDAO userDAO = new MemUserDAO();
     // not quite sure if this is complete but I think its a start
 
-    public AuthData register(UserData user) throws DataAccessException {
+    public void register(UserData user) throws DataAccessException {
         String password = user.password();
         if (password == null || password.isEmpty()) {
             throw new DataAccessException("Password cannot be empty");
         }
         UserData newUser = new UserData(user.username(), password, user.email());
         userDAO.createUser(newUser);
-        return new AuthData(newUser.username(), newUser.password());
+        new AuthData(newUser.username(), newUser.password());
     }
 
     public AuthData login(UserData user) throws DataAccessException {

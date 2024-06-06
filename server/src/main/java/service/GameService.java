@@ -3,12 +3,13 @@ package service;
 import dataaccess.DataAccessException;
 import dataaccess.GameDAO;
 
+import dataaccess.MemGameDAO;
 import model.GameData;
 
 import java.util.Collection;
 
 public class GameService {
-    public static GameDAO gameDAO;
+    public static GameDAO gameDAO = new MemGameDAO();
 
     public Collection<GameData> listGames() throws DataAccessException {
         return gameDAO.listGames();
