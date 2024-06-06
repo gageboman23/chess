@@ -13,6 +13,11 @@ public class UserServiceTest {
 
     static final UserService userService = new UserService();
 
+    @BeforeEach
+    void clear(){
+        userService.clear();
+    }
+
     @Test
     void register() throws Exception{
         assertDoesNotThrow(() -> {
@@ -29,4 +34,26 @@ public class UserServiceTest {
         });
     }
 
+
+    @Test
+    void registerFail() throws DataAccessException{
+        DataAccessException exception = assertThrows(DataAccessException.class, () -> {
+            var user1 = new UserData("user1", null, "email1");
+            userService.register(user1);
+        });
+        assertTrue(exception.getMessage().contains("bad request"));
+    }
+
+    @Test
+    void verifyUserTest() throws DataAccessException {
+        var user1 = new UserData("user1", "pass1", "email1");
+        userService.register(user1);
+        assertTrue(userService.verifyUser(user1));
+    }
+
+    @Test
+    void verifyUserTestFail() throws DataAccessException {
+        var user2 = new UserData("user2", "pass2", "email2");
+        assertFalse(userService.verifyUser(user2));
+    }
 }

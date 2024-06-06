@@ -2,7 +2,6 @@ package server.handlers;
 
 
 import ResponseTypes.ErrorResponse;
-import com.google.gson.Gson;
 import dataaccess.DataAccessException;
 import model.AuthData;
 import spark.Request;

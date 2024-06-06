@@ -15,7 +15,7 @@ public class UserService {
     public void register(UserData user) throws DataAccessException {
         String password = user.password();
         if (password == null || password.isEmpty()) {
-            throw new DataAccessException("Password cannot be empty");
+            throw new DataAccessException("Error: bad request");
         }
         UserData newUser = new UserData(user.username(), password, user.email());
         userDAO.createUser(newUser);
