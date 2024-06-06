@@ -15,7 +15,6 @@ public class GenHandler {
     GameService gameService = new GameService();
     UserService userService = new UserService();
     AuthService authService = new AuthService();
-    Gson serializer = new Gson();
 
     public GenHandler() throws DataAccessException {
     }
