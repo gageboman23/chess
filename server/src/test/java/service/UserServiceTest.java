@@ -10,7 +10,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class UserServiceTest {
 
-    static final UserService userService = new UserService();
+    public UserService userService = new UserService();
+
+    public UserServiceTest() throws DataAccessException {
+    }
 
     @BeforeEach
     void clear(){

@@ -1,6 +1,7 @@
 package service;
 
 import dataaccess.DataAccessException;
+import dataaccess.MemGameDAO;
 import dataaccess.MemUserDAO;
 import dataaccess.UserDAO;
 import model.AuthData;
@@ -9,8 +10,16 @@ import model.UserData;
 import java.util.Objects;
 
 public class UserService {
-    public UserDAO userDAO = new MemUserDAO();
-    // not quite sure if this is complete but I think its a start
+    public static UserDAO userDAO;
+
+    public UserService() throws DataAccessException {
+        try {
+            userDAO = new MemUserDAO();
+        } catch (Exception e) {
+            throw new DataAccessException(e.getMessage());
+        }
+    }
+
 
     public void register(UserData user) throws DataAccessException {
         String password = user.password();

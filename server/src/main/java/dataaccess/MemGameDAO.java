@@ -3,48 +3,50 @@ package dataaccess;
 import chess.ChessGame;
 import model.GameData;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
 public class MemGameDAO implements GameDAO {
-    Collection<GameData> AllGames = new ArrayList<>();
-    int gameCounter = 0;
+    static int gameCounter = 0;
+    static HashMap<Integer, GameData> gameList = new HashMap<>();
 
     @Override
     public int createGame(String gameName) throws DataAccessException {
         gameCounter++;
-        GameData newGame = new GameData(gameCounter, null, null, gameName, new ChessGame());
-        AllGames.add(newGame);
-        return newGame.gameID();
+        int gameID = gameCounter;
+        ChessGame game = new ChessGame();
+        GameData gameData = new GameData(gameID, null, null, gameName, game);
+        gameList.put(gameID, gameData);
+        return gameID;
     }
 
     @Override
     public GameData getGame(int gameID) throws DataAccessException {
-        for (GameData gameData : AllGames) {
-            if (gameData.gameID() == gameID) {
-                return gameData;
-            }
+        if(gameList.get(gameID) != null){
+            return gameList.get(gameID);
         }
-        return null;
+        else {
+            throw new DataAccessException("Error: bad request");
+        }
     }
 
     @Override
-    public void updateGame(int gameID, GameData gameData) throws DataAccessException {
-        for (GameData game : AllGames) {
-            if (game.gameID() == gameID) {
-                game = gameData;
-            }
+    public void updateGame(int gameID, GameData gameData) throws DataAccessException{
+        if(gameList.get(gameID) != null){
+            gameList.replace(gameID, gameData);
         }
-
+        else {
+            throw new DataAccessException("Error: bad request");
+        }
     }
 
     @Override
     public Collection<GameData> listGames() throws DataAccessException {
-        return AllGames;
+        return gameList.values();
     }
 
     @Override
     public void clear() {
-        AllGames.clear();
+        gameList.clear();
     }
 }
