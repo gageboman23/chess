@@ -1,5 +1,8 @@
 package service;
 
+import dataaccess.AuthDAOBase;
+import dataaccess.LocalUserDAO;
+import dataaccess.UserDAOBase;
 import model.AuthData;
 import model.UserData;
 
@@ -9,11 +12,8 @@ import java.util.UUID;
 
 public class RegisterService {
 
-    //move this datastructure to the DAO so that its compartmentalized
-    private Map<String, UserData> userDatabase = new HashMap<>();
-
     public UserData getUser(String username) {
-        return userDatabase.get(username);
+
     }
 
     public void createUser(UserData userData) {
