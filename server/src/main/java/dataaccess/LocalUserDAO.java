@@ -10,7 +10,7 @@ public class LocalUserDAO implements UserDAOBase{
 
     @Override
     public void createUser(UserData ud) throws DataAccessException {
-        if (ud.password() == null || ud.username() == null) {
+        if (ud.password() == null || ud.username() == null || ud.email() == null) {
             throw new DataAccessException("Error: bad request");
         } else if(userMap.get(ud.username()) != null){
             throw new DataAccessException("Error: already taken");

@@ -1,15 +1,30 @@
 package service;
 
+import dataaccess.AuthDAOBase;
+import dataaccess.DataAccessException;
+import dataaccess.LocalAuthDAO;
 import model.AuthData;
+import model.UserData;
 
 import java.util.UUID;
 
 public class AuthService {
 
-    public AuthData createAuth(String username) {// create a new auth token and attach it to the username in the server and then return AuthData (username, authToken)
-        String authToken = UUID.randomUUID().toString();
+    AuthDAOBase authDAO = new LocalAuthDAO();
 
-        // not sure if this is stored in the same database or if i need to create a separate auth database... Scratch that, have not used DAOs at all. I think thatll go here anyway.
+    public AuthData createAuth(String username) throws DataAccessException {
+        return authDAO.createAuth(username);
+    }
 
+    public boolean verifyAuth(AuthData authData) throws DataAccessException{
+        String savedAuth = authDAO.getAuth(authData.username()).authToken();
+        if (authData.authToken() == savedAuth){
+            return true;
+        }
+        return false;
+    }
+
+    public void deleteAuth(AuthData authData) throws DataAccessException{
+        authDAO.deleteAuth(authData.username());
     }
 }

@@ -1,20 +1,30 @@
 package service;
 
+import dataaccess.DataAccessException;
+import dataaccess.LocalUserDAO;
+import dataaccess.UserDAOBase;
 import model.UserData;
 
 public class UserService {
 
-    public void createUser(UserData userData) {
-        String username = userData.username();
-        if (!userDatabase.containsKey(username)) {
-            userDatabase.put(username, userData);
-        } else {
-            throw new RuntimeException("Username already exists");
+    UserDAOBase userDAO = new LocalUserDAO();
+
+    public void createUser(UserData userData) throws DataAccessException {
+        userDAO.createUser(userData);
+    }
+
+    public UserData getUser(String username) throws DataAccessException{
+        return userDAO.getUser(username);
+    }
+
+    public boolean verifyPassword(UserData userdata) throws DataAccessException{
+        String savedPassword = userDAO.getUser(userdata.username()).password();
+        if (savedPassword == userdata.password()){
+            return true;
         }
+        return false;
     }
 
-    public UserData getUser(String username) {
 
-    }
 
 }
