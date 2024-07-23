@@ -2,8 +2,9 @@ package service;
 
 import dataaccess.*;
 import model.AuthData;
-import spark.*;
 import model.UserData;
+import server.Responses.ErrorResponse;
+import server.Responses.RegisterResponse;
 
 import java.util.UUID;
 
@@ -11,20 +12,22 @@ public class RegisterService {
 
     UserDAOBase userDAO = new LocalUserDAO();
     AuthDAOBase authDAO = new LocalAuthDAO();
-    Response res;
 
 
     public Object register(UserData userData) throws DataAccessException {
+
         if (userData.username() == null || userData.email() == null || userData.password() == null){
-            res.status(400);
-            res.body("");
-            return res;
+        return new ErrorResponse("Error: bad request");
+        }
+
+        if (userDAO.getUser(userData.username()) != null){
+            return new ErrorResponse("Error: already taken");
         }
 
         userDAO.insertUser(userData);
-        authDAO.insertAuth(createAuth(userData));
-        res.status(200);
-        return
+        AuthData authData = createAuth(userData);
+        authDAO.insertAuth(authData);
+        return new RegisterResponse(authData.username(), authData.authToken());
     }
 
     private AuthData createAuth(UserData userData){
