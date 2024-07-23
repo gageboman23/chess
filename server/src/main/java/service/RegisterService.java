@@ -17,12 +17,14 @@ public class RegisterService {
     public Object register(UserData userData) throws DataAccessException {
         if (userData.username() == null || userData.email() == null || userData.password() == null){
             res.status(400);
-            res.body("")
+            res.body("");
             return res;
         }
 
         userDAO.insertUser(userData);
         authDAO.insertAuth(createAuth(userData));
+        res.status(200);
+        return
     }
 
     private AuthData createAuth(UserData userData){
