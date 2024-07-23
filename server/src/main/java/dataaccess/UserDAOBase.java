@@ -3,9 +3,9 @@ package dataaccess;
 import model.UserData;
 
 public interface UserDAOBase {
-    void createUser(UserData ud) throws DataAccessException;
+    void insertUser(UserData ud) throws DataAccessException;
     UserData getUser(String username) throws DataAccessException;
-    void deleteUser(String username);
-    void clear();
+    void deleteUser(String username) throws DataAccessException;
+    void clear() throws DataAccessException;
 
 }

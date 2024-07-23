@@ -1,5 +1,6 @@
 package server;
 
+import handlers.RegisterHandler;
 import spark.*;
 
 public class Server {
@@ -9,7 +10,7 @@ public class Server {
 
         Spark.staticFiles.location("web");
         Spark.get("/", (req, res) -> "Hello from Spark Server!");
-        Spark.post("/user", ((request, response) -> new RegisterHandler().method));
+        Spark.post("/user", ((request, response) -> new RegisterHandler().handle(request, response)));
 
         // Register your endpoints and handle exceptions here.
 

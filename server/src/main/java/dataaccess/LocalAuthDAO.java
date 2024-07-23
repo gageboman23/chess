@@ -11,32 +11,19 @@ public class LocalAuthDAO implements AuthDAOBase{
 
 
     @Override
-    public AuthData createAuth(String username) throws DataAccessException {
-        String authToken = UUID.randomUUID().toString();
-        AuthData authData = new AuthData(authToken, username);
-        authMap.put(username, authData); // better to pair it with username or auth token?
-        return authData;
+    public void insertAuth(AuthData authData) throws DataAccessException{ //insert
+        authMap.put(authData.authToken(), authData); // better to pair it with username or auth token?
     }
 
 
     @Override
-    public AuthData getAuth(String username) throws DataAccessException {
-        if(authMap.get(username) != null) {
-            return authMap.get(username);
-        }
-        else {
-            throw new DataAccessException("Error: unauthorized");
-        }
+    public AuthData getAuth(String authToken) throws DataAccessException {
+            return authMap.get(authToken);
     }
 
     @Override
-    public void deleteAuth(String username) throws DataAccessException {
-        if(authMap.get(username) != null) {
-            authMap.remove(username);
-        }
-        else {
-            throw new DataAccessException("Error: unauthorized");
-        }
+    public void deleteAuth(String authToken) throws DataAccessException {
+            authMap.remove(authToken);
     }
 
 

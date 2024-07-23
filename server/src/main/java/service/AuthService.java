@@ -13,7 +13,7 @@ public class AuthService {
     AuthDAOBase authDAO = new LocalAuthDAO();
 
     public AuthData createAuth(String username) throws DataAccessException {
-        return authDAO.createAuth(username);
+        return authDAO.createAuth(username); //insert instead of generate
     }
 
     public boolean verifyAuth(AuthData authData) throws DataAccessException{
