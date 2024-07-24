@@ -6,6 +6,7 @@ import model.UserData;
 import Requests.LoginRequest;
 import Responses.ErrorResponse;
 import Responses.LoginResponse;
+
 import java.util.Objects;
 import java.util.UUID;
 
@@ -17,16 +18,17 @@ public class LoginService {
 
     public Object login(LoginRequest loginRequest) throws DataAccessException {
         UserData serverData = userDAO.getUser(loginRequest.username());
-        if (serverData != null && Objects.equals(serverData.password(), loginRequest.password())){
-            authDAO.insertAuth(createAuth(serverData));
-            return new LoginResponse(serverData.username(), createAuth(serverData).authToken());
+        if (serverData != null && Objects.equals(serverData.password(), loginRequest.password())) {
+            AuthData newAuth = createAuth(loginRequest.username());
+            authDAO.insertAuth(newAuth);
+            return new LoginResponse(serverData.username(), newAuth.authToken());
         } else {
             return new ErrorResponse("Error: unauthorized");
         }
     }
 
-    private AuthData createAuth(UserData userData){
+    private AuthData createAuth(String username) {
         String authToken = UUID.randomUUID().toString();
-        return new AuthData(authToken, userData.username());
+        return new AuthData(authToken, username);
     }
 }

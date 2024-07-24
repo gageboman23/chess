@@ -7,7 +7,7 @@ import Responses.ErrorResponse;
 import service.RegisterService;
 import spark.*;
 
-public class RegisterHandler{
+public class RegisterHandler {
 
     private final RegisterService registerService = new RegisterService();
 
@@ -17,10 +17,10 @@ public class RegisterHandler{
         var newUser = new Gson().fromJson(req.body(), UserData.class);
         Object respObj;
         try {
-            respObj  = registerService.register(newUser);
+            respObj = registerService.register(newUser);
 
-            if (respObj instanceof ErrorResponse errorResponse){
-                switch (errorResponse.message()){
+            if (respObj instanceof ErrorResponse errorResponse) {
+                switch (errorResponse.message()) {
                     case "Error: bad request":
                         res.status(400);
                         break;

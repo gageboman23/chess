@@ -8,7 +8,7 @@ import Responses.ErrorResponse;
 import service.JoinGameService;
 import spark.*;
 
-public class JoinGameHandler{
+public class JoinGameHandler {
 
     private final JoinGameService joinGameService = new JoinGameService();
     Object respObj;
@@ -19,10 +19,10 @@ public class JoinGameHandler{
         String authToken = req.headers("authorization");
         JoinGameRequest joinGameRequest = new Gson().fromJson(req.body(), JoinGameRequest.class);
         try {
-            respObj  = joinGameService.joinGame(joinGameRequest, authToken);
+            respObj = joinGameService.joinGame(joinGameRequest, authToken);
 
-            if (respObj instanceof ErrorResponse errorResponse){
-                switch (errorResponse.message()){
+            if (respObj instanceof ErrorResponse errorResponse) {
+                switch (errorResponse.message()) {
                     case "Error: bad request":
                         res.status(400);
                         break;

@@ -4,13 +4,13 @@ import model.UserData;
 
 import java.util.HashMap;
 
-public class LocalUserDAO implements UserDAOBase{
+public class LocalUserDAO implements UserDAOBase {
 
     static HashMap<String, UserData> userMap = new HashMap<>();
 
     @Override
     public void insertUser(UserData ud) throws DataAccessException {
-            userMap.put(ud.username(), ud);
+        userMap.put(ud.username(), ud);
     }
 
     @Override
@@ -19,13 +19,13 @@ public class LocalUserDAO implements UserDAOBase{
     }
 
     @Override
-    public void deleteUser(String username) throws DataAccessException{
+    public void deleteUser(String username) throws DataAccessException {
         userMap.remove(username);
 
     }
 
     @Override
-    public void clear() throws DataAccessException{
+    public void clear() throws DataAccessException {
         userMap.clear();
     }
 }

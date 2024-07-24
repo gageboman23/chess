@@ -7,7 +7,7 @@ import Responses.ErrorResponse;
 import service.LoginService;
 import spark.*;
 
-public class LoginHandler{
+public class LoginHandler {
 
     private final LoginService loginService = new LoginService();
 
@@ -17,9 +17,9 @@ public class LoginHandler{
         var loginRequest = new Gson().fromJson(req.body(), LoginRequest.class);
         Object respObj;
         try {
-            respObj  = loginService.login(loginRequest);
+            respObj = loginService.login(loginRequest);
 
-            if (respObj instanceof ErrorResponse errorResponse){
+            if (respObj instanceof ErrorResponse errorResponse) {
                 if (errorResponse.message().equals("Error: unauthorized")) {
                     res.status(401);
                 } else {

@@ -6,7 +6,7 @@ import Responses.ErrorResponse;
 import service.ListGamesService;
 import spark.*;
 
-public class ListGamesHandler{
+public class ListGamesHandler {
 
     private final ListGamesService listGamesService = new ListGamesService();
     Object respObj;
@@ -16,9 +16,9 @@ public class ListGamesHandler{
 
         var listGamesRequest = req.headers("authorization");
         try {
-            respObj  = listGamesService.listGames(listGamesRequest);
+            respObj = listGamesService.listGames(listGamesRequest);
 
-            if (respObj instanceof ErrorResponse errorResponse){
+            if (respObj instanceof ErrorResponse errorResponse) {
                 if (errorResponse.message().equals("Error: unauthorized")) {
                     res.status(401);
                 } else {

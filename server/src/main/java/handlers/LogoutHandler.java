@@ -6,7 +6,7 @@ import Responses.ErrorResponse;
 import service.LogoutService;
 import spark.*;
 
-public class LogoutHandler{
+public class LogoutHandler {
 
     private final LogoutService logoutService = new LogoutService();
     Object respObj;

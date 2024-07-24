@@ -24,6 +24,7 @@ public class LocalGameDAO implements GameDAOBase {
     @Override
     public Collection<GameData> listGames(String authToken) throws DataAccessException {
         return gameMap.values();
+
     }
 
     @Override
@@ -32,7 +33,7 @@ public class LocalGameDAO implements GameDAOBase {
     }
 
     @Override
-    public void clear() throws DataAccessException{
+    public void clear() throws DataAccessException {
         gameMap.clear();
     }
 }

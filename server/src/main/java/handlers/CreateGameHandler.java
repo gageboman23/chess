@@ -7,7 +7,7 @@ import Responses.ErrorResponse;
 import service.CreateGameService;
 import spark.*;
 
-public class CreateGameHandler{
+public class CreateGameHandler {
 
     private final CreateGameService createGameService = new CreateGameService();
     Object respObj;
@@ -18,10 +18,10 @@ public class CreateGameHandler{
         String authToken = req.headers("authorization");
         CreateGameRequest createGameRequest = new Gson().fromJson(req.body(), CreateGameRequest.class);
         try {
-            respObj  = createGameService.createGame(createGameRequest, authToken);
+            respObj = createGameService.createGame(createGameRequest, authToken);
 
-            if (respObj instanceof ErrorResponse errorResponse){
-                switch (errorResponse.message()){
+            if (respObj instanceof ErrorResponse errorResponse) {
+                switch (errorResponse.message()) {
                     case "Error: bad request":
                         res.status(400);
                         break;

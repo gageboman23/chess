@@ -9,7 +9,7 @@ public class KingMoveCalc implements PieceMoveCalc {
     @Override
     public Collection<ChessMove> calculateMoves(ChessBoard board, ChessPosition position) {
         Collection<ChessMove> moves = new ArrayList<>();
-        int[][] directions = {{0, 1},{0, -1},{1, 0},{-1, 0},{1, 1},{-1, -1},{-1, 1},{1, -1}};
+        int[][] directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}, {1, 1}, {-1, -1}, {-1, 1}, {1, -1}};
 
         int startRow = position.getRow();
         int startCol = position.getColumn();
@@ -42,7 +42,7 @@ public class KingMoveCalc implements PieceMoveCalc {
                 continue;
             }
             moves.add(new ChessMove(position, new ChessPosition(row, col), null));
-            }
+        }
         return moves;
     }
 }

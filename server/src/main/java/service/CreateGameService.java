@@ -11,12 +11,13 @@ import dataaccess.LocalAuthDAO;
 import dataaccess.LocalGameDAO;
 import model.GameData;
 
+import java.util.Random;
+
 
 public class CreateGameService {
 
     GameDAOBase gameDAO = new LocalGameDAO();
     AuthDAOBase authDAO = new LocalAuthDAO();
-    int gameIDcounter = 0;
 
 
     public Object createGame(CreateGameRequest createGameRequest, String authToken) throws DataAccessException {
@@ -26,13 +27,15 @@ public class CreateGameService {
         if (authDAO.getAuth(authToken) == null) {
             return new ErrorResponse("Error: unauthorized");
         }
-        int thisGamesID = createGameID();
-        gameDAO.insertGame(new GameData(thisGamesID, null, null, createGameRequest.gameName(), new ChessGame()));
-        return new CreateGameResponse(thisGamesID);
-        }
-
-    private int createGameID(){
-        gameIDcounter++;
-        return gameIDcounter;
+        GameData newGame = new GameData(generateGameID(), null, null, createGameRequest.gameName(), new ChessGame());
+        gameDAO.insertGame(newGame);
+        return new CreateGameResponse(newGame.gameID());
     }
+
+    private Integer generateGameID() {
+        Random random = new Random();
+        return random.nextInt(500) + 1;
+    }
+
+
 }

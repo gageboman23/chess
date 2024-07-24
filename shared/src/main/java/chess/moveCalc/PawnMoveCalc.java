@@ -117,6 +117,6 @@ public class PawnMoveCalc implements PieceMoveCalc {
                 BlackMoves.add(new ChessMove(position, new ChessPosition(startRow - 1, startCol), null));
             }
         }
-    return BlackMoves;
+        return BlackMoves;
     }
 }

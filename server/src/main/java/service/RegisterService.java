@@ -16,11 +16,11 @@ public class RegisterService {
 
     public Object register(UserData userData) throws DataAccessException {
 
-        if (userData.username() == null || userData.password() == null ||userData.email() == null){
-        return new ErrorResponse("Error: bad request");
+        if (userData.username() == null || userData.password() == null || userData.email() == null) {
+            return new ErrorResponse("Error: bad request");
         }
 
-        if (userDAO.getUser(userData.username()) != null){
+        if (userDAO.getUser(userData.username()) != null) {
             return new ErrorResponse("Error: already taken");
         }
 
@@ -30,16 +30,13 @@ public class RegisterService {
         return new RegisterResponse(authData.username(), authData.authToken());
     }
 
-    private AuthData createAuth(UserData userData){
+    private AuthData createAuth(UserData userData) {
         String authToken = UUID.randomUUID().toString();
         return new AuthData(authToken, userData.username());
     }
 
 
-
-
-
 }
- // one pub method "register"
+// one pub method "register"
 
 // makes calls to all DataAccess methods necessary

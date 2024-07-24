@@ -3,7 +3,9 @@ package Responses;
 import java.util.Collection;
 
 
-public record ListGamesResponse(Collection<GameInfo> games) {}
+public record ListGamesResponse(Collection<GameInfo> games) {
+}
 
-record GameInfo(int gameID, String whiteUsername, String blackUsername, String gameName) {}
+record GameInfo(int gameID, String whiteUsername, String blackUsername, String gameName) {
+}
 

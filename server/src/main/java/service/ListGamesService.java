@@ -17,7 +17,7 @@ public class ListGamesService {
 
 
     public Object listGames(String authoken) throws DataAccessException {
-        if (authoken != null && authDAO.getAuth(authoken) != null){
+        if (authoken != null && authDAO.getAuth(authoken) != null) {
             Collection gameList = gameDAO.listGames(authoken);
             return new ListGamesResponse(gameList);
         } else {
