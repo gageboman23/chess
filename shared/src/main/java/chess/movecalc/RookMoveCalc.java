@@ -15,8 +15,8 @@ public class RookMoveCalc implements PieceMoveCalc {
         int startCol = position.getColumn();
 
         //rooks color
-        ChessPiece MyPiece = board.getPiece(new ChessPosition(startRow, startCol));
-        ChessGame.TeamColor MyPieceColor = MyPiece.getTeamColor();
+        ChessPiece myPiece = board.getPiece(new ChessPosition(startRow, startCol));
+        ChessGame.TeamColor myPieceColor = myPiece.getTeamColor();
 
         for (int[] direction : directions) {
             int row = startRow;
@@ -33,9 +33,9 @@ public class RookMoveCalc implements PieceMoveCalc {
 
                 ChessPiece pieceAtPosition = board.getPiece(new ChessPosition(row, col));
 
-                if (pieceAtPosition != null && pieceAtPosition != MyPiece) {
+                if (pieceAtPosition != null && pieceAtPosition != myPiece) {
                     // If it's an enemy piece, add the move (capture)
-                    if (pieceAtPosition.getTeamColor() != MyPieceColor) {
+                    if (pieceAtPosition.getTeamColor() != myPieceColor) {
                         moves.add(new ChessMove(position, new ChessPosition(row, col), null));
                     }
                     // Stop adding moves in this direction
