@@ -1,16 +1,14 @@
 package service;
 
 import Responses.ListGamesResponse;
-import dataaccess.*;
-import model.AuthData;
-import model.UserData;
-
 import Responses.ErrorResponse;
-import Responses.LoginResponse;
+import dataaccess.AuthDAOBase;
+import dataaccess.DataAccessException;
+import dataaccess.GameDAOBase;
+import dataaccess.LocalAuthDAO;
+import dataaccess.LocalGameDAO;
 
 import java.util.Collection;
-import java.util.Objects;
-import java.util.UUID;
 
 public class ListGamesService {
 

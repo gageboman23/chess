@@ -14,7 +14,7 @@ public class Server {
         Spark.post("/session", (((req, res) -> (new LoginHandler()).handle(req, res))));
         Spark.delete("/session", (((req, res) -> (new LogoutHandler()).handle(req, res))));
         Spark.get("/game", (((req, res) -> (new ListGamesHandler()).handle(req, res))));
-
+        Spark.post("/game", (((req, res) -> (new CreateGameHandler()).handle(req, res))));
         // Register your endpoints and handle exceptions here.
 
         Spark.awaitInitialization();
