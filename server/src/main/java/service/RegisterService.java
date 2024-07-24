@@ -10,6 +10,7 @@ import java.util.UUID;
 
 public class RegisterService {
 
+
     UserDAOBase userDAO = new LocalUserDAO();
     AuthDAOBase authDAO = new LocalAuthDAO();
 
