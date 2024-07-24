@@ -1,4 +1,4 @@
-package serviceTests;
+package servicetests;
 
 import static org.junit.jupiter.api.Assertions.*;
 import dataaccess.*;

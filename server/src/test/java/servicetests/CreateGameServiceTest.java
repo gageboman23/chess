@@ -1,67 +1,61 @@
-package serviceTests;
+package servicetests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import dataaccess.*;
 import model.AuthData;
-import model.GameData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import requests.JoinGameRequest;
+import requests.CreateGameRequest;
+import responses.CreateGameResponse;
 import responses.ErrorResponse;
-import service.JoinGameService;
+import service.CreateGameService;
 import service.ClearService;
 
-public class JoinGameServiceTest {
+public class CreateGameServiceTest {
 
-    private JoinGameService joinGameService;
+    private CreateGameService createGameService;
 
     @BeforeEach
     public void setUp() throws DataAccessException {
-        joinGameService = new JoinGameService();
+        createGameService = new CreateGameService();
         ClearService clearService = new ClearService();
         clearService.clear();
     }
 
     @Test
-    public void testJoinGameSuccess() throws DataAccessException {
+    public void testCreateGameSuccess() throws DataAccessException {
         // Arrange
         String authToken = "validAuthToken";
-        JoinGameRequest joinGameRequest = new JoinGameRequest("WHITE", 1);
+        CreateGameRequest createGameRequest = new CreateGameRequest("newGame");
 
         // Insert a valid auth token into the AuthDAO
         AuthDAOBase authDAO = new LocalAuthDAO();
         authDAO.insertAuth(new AuthData(authToken, "username"));
 
-        // Insert a game into the GameDAO
-        GameDAOBase gameDAO = new LocalGameDAO();
-        gameDAO.insertGame(new GameData(1, null, null, "testGame", null));
-
         // Act
         Object response = null;
         try {
-            response = joinGameService.joinGame(joinGameRequest, authToken);
+            response = createGameService.createGame(createGameRequest, authToken);
         } catch (DataAccessException e) {
             fail("Exception thrown: " + e.getMessage());
         }
 
         // Assert
-        assertNull(response);  // JoinGameService returns null on success
-        GameData gameData = gameDAO.getGame(1);
-        assertNotNull(gameData);
-        assertEquals("username", gameData.whiteUsername());
+        assertInstanceOf(CreateGameResponse.class, response);
+        CreateGameResponse createGameResponse = (CreateGameResponse) response;
     }
 
     @Test
-    public void testJoinGameMissingFields() {
+    public void testCreateGameMissingFields() {
         // Arrange
         String authToken = "validAuthToken";
-        JoinGameRequest joinGameRequest = new JoinGameRequest("WHITE", null);
+        CreateGameRequest createGameRequest = new CreateGameRequest(null);
 
         // Act
         Object response = null;
         try {
-            response = joinGameService.joinGame(joinGameRequest, authToken);
+            response = createGameService.createGame(createGameRequest, authToken);
         } catch (DataAccessException e) {
             fail("Exception thrown: " + e.getMessage());
         }
