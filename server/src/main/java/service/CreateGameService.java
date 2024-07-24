@@ -1,8 +1,8 @@
 package service;
 
-import Requests.CreateGameRequest;
-import Responses.CreateGameResponse;
-import Responses.ErrorResponse;
+import requests.CreateGameRequest;
+import responses.CreateGameResponse;
+import responses.ErrorResponse;
 import chess.ChessGame;
 import dataaccess.AuthDAOBase;
 import dataaccess.DataAccessException;

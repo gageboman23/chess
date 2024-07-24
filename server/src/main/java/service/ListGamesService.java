@@ -1,7 +1,7 @@
 package service;
 
-import Responses.ListGamesResponse;
-import Responses.ErrorResponse;
+import responses.ListGamesResponse;
+import responses.ErrorResponse;
 import dataaccess.AuthDAOBase;
 import dataaccess.DataAccessException;
 import dataaccess.GameDAOBase;

@@ -3,10 +3,9 @@ package service;
 import dataaccess.*;
 import model.AuthData;
 import model.UserData;
-import Requests.LoginRequest;
-import Responses.ErrorResponse;
-import Responses.LoginResponse;
-
+import requests.LoginRequest;
+import responses.ErrorResponse;
+import responses.LoginResponse;
 import java.util.Objects;
 import java.util.UUID;
 

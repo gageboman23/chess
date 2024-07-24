@@ -57,14 +57,14 @@ public class ChessGame {
             return null;
         } else {
             ChessPiece piece = board.getPiece(startPosition);
-            Collection<ChessMove> AllMoves = piece.pieceMoves(board, startPosition);
-            Collection<ChessMove> validMoves = new ArrayList<>(AllMoves);
+            Collection<ChessMove> allMoves = piece.pieceMoves(board, startPosition);
+            Collection<ChessMove> validMoves = new ArrayList<>(allMoves);
 
             ChessGame testGame = new ChessGame();
             ChessBoard boardCopy = board.deepCopy();
             testGame.setBoard(boardCopy);
 
-            for (ChessMove move : AllMoves) {
+            for (ChessMove move : allMoves) {
                 ChessPosition oldPiecePos = move.getEndPosition();
                 ChessPiece oldPiece = testGame.board.getPiece(oldPiecePos);
                 testGame.testMove(move);
@@ -143,9 +143,9 @@ public class ChessGame {
      * @return True if the specified team is in check
      */
     public boolean isInCheck(TeamColor teamColor) {
-        ChessPosition KingPos = findPosition(board, teamColor, ChessPiece.PieceType.KING);
+        ChessPosition kingPos = findPosition(board, teamColor, ChessPiece.PieceType.KING);
         Collection<ChessMove> enemyMoves = new ArrayList<>();
-        boolean CheckOrNah = false;
+        boolean checkOrNah = false;
 
         for (int row = 1; row < 9; row++) {
             for (int col = 1; col < 9; col++) {
@@ -157,15 +157,15 @@ public class ChessGame {
                     enemyMoves = piece.pieceMoves(getBoard(), pos);
                     for (ChessMove move : enemyMoves) {
                         ChessPosition endPos = move.getEndPosition();
-                        if (endPos.equals(KingPos)) {
-                            CheckOrNah = true;
+                        if (endPos.equals(kingPos)) {
+                            checkOrNah = true;
                             break;
                         }
                     }
                 }
             }
         }
-        return CheckOrNah;
+        return checkOrNah;
     }
 
     @Override

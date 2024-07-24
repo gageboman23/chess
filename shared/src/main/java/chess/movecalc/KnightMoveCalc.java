@@ -1,15 +1,15 @@
-package chess.moveCalc;
+package chess.movecalc;
 
 import chess.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class KingMoveCalc implements PieceMoveCalc {
+public class KnightMoveCalc implements PieceMoveCalc {
     @Override
     public Collection<ChessMove> calculateMoves(ChessBoard board, ChessPosition position) {
         Collection<ChessMove> moves = new ArrayList<>();
-        int[][] directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}, {1, 1}, {-1, -1}, {-1, 1}, {1, -1}};
+        int[][] directions = {{2, 1}, {2, -1}, {-2, 1}, {-2, -1}, {1, 2}, {-1, 2}, {1, -2}, {-1, -2}};
 
         int startRow = position.getRow();
         int startCol = position.getColumn();

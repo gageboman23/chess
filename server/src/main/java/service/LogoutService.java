@@ -1,6 +1,6 @@
 package service;
 
-import Responses.ErrorResponse;
+import responses.ErrorResponse;
 import dataaccess.*;
 
 public class LogoutService {

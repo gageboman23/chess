@@ -1,9 +1,9 @@
 package handlers;
 
-import Requests.CreateGameRequest;
+import requests.CreateGameRequest;
 import com.google.gson.Gson;
 import dataaccess.DataAccessException;
-import Responses.ErrorResponse;
+import responses.ErrorResponse;
 import service.CreateGameService;
 import spark.*;
 

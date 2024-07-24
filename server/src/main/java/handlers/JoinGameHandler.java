@@ -1,10 +1,10 @@
 package handlers;
 
 
-import Requests.JoinGameRequest;
+import requests.JoinGameRequest;
 import com.google.gson.Gson;
 import dataaccess.DataAccessException;
-import Responses.ErrorResponse;
+import responses.ErrorResponse;
 import service.JoinGameService;
 import spark.*;
 

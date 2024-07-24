@@ -1,7 +1,7 @@
 package service;
 
-import Requests.JoinGameRequest;
-import Responses.ErrorResponse;
+import requests.JoinGameRequest;
+import responses.ErrorResponse;
 import dataaccess.*;
 import model.GameData;
 

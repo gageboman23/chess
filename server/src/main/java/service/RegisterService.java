@@ -3,8 +3,8 @@ package service;
 import dataaccess.*;
 import model.AuthData;
 import model.UserData;
-import Responses.ErrorResponse;
-import Responses.RegisterResponse;
+import responses.ErrorResponse;
+import responses.RegisterResponse;
 
 import java.util.UUID;
 
