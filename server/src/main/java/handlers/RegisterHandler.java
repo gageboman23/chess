@@ -3,7 +3,7 @@ package handlers;
 import com.google.gson.Gson;
 import dataaccess.DataAccessException;
 import model.UserData;
-import server.Responses.ErrorResponse;
+import Responses.ErrorResponse;
 import service.RegisterService;
 import spark.*;
 
@@ -41,4 +41,3 @@ public class RegisterHandler{
         return new Gson().toJson(respObj);
     }
 }
- // this is where I will receive the register request, deserialize the json, pass to service, and when i get it back, reserialize and return proper codes for behavior.

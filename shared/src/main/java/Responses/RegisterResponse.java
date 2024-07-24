@@ -1,3 +1,3 @@
-package server.Responses;
+package Responses;
 
 public record RegisterResponse(String username, String authToken) {}

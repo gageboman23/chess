@@ -1,3 +1,3 @@
-package server.Responses;
+package Responses;
 
 public record ErrorResponse(String message) {}

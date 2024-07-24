@@ -1,6 +1,8 @@
 package server;
 
 import handlers.ClearHandler;
+import handlers.LoginHandler;
+import handlers.LogoutHandler;
 import handlers.RegisterHandler;
 import spark.*;
 
@@ -10,9 +12,10 @@ public class Server {
         Spark.port(desiredPort);
 
         Spark.staticFiles.location("web");
-        Spark.get("/", (req, res) -> "Hello from Spark Server!");
         Spark.post("/user", ((req, res) -> (new RegisterHandler()).handle(req, res)));
         Spark.delete("/db", ((req, res) -> (new ClearHandler()).handle(req, res)));
+        Spark.post("/session", (((req, res) -> (new LoginHandler().handle(req, res)) )));
+        Spark.delete("/session", (((req, res) -> (new LogoutHandler().handle(req, res)) )));
 
         // Register your endpoints and handle exceptions here.
 

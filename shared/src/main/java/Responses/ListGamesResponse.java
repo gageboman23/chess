@@ -1,4 +1,4 @@
-package server.Responses;
+package Responses;
 
 import java.util.List;
 

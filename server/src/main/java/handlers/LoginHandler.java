@@ -2,9 +2,9 @@ package handlers;
 
 import com.google.gson.Gson;
 import dataaccess.DataAccessException;
-import model.UserData;
-import server.Responses.ErrorResponse;
-import service.RegisterService;
+import Requests.LoginRequest;
+import Responses.ErrorResponse;
+import service.LoginService;
 import spark.*;
 
 public class LoginHandler{
@@ -14,22 +14,16 @@ public class LoginHandler{
     public Object handle(Request req, Response res) throws DataAccessException {
         System.out.println("Login Handler");
 
-        var newUser = new Gson().fromJson(req.body(), UserData.class);
+        var loginRequest = new Gson().fromJson(req.body(), LoginRequest.class);
         Object respObj;
         try {
-            respObj  = registerService.register(newUser);
+            respObj  = loginService.login(loginRequest);
 
             if (respObj instanceof ErrorResponse errorResponse){
-                switch (errorResponse.message()){
-                    case "Error: bad request":
-                        res.status(400);
-                        break;
-                    case "Error: already taken":
-                        res.status(403);
-                        break;
-                    default:
-                        res.status(500);
-                        break;
+                if (errorResponse.message().equals("Error: unauthorized")) {
+                    res.status(401);
+                } else {
+                    res.status(500);
                 }
             } else {
                 res.status(200);
@@ -41,4 +35,3 @@ public class LoginHandler{
         return new Gson().toJson(respObj);
     }
 }
-// this is where I will receive the register request, deserialize the json, pass to service, and when i get it back, reserialize and return proper codes for behavior.

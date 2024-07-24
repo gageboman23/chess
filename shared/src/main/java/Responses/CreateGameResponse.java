@@ -1,4 +1,4 @@
-package server.Responses;
+package Responses;
 
 public record CreateGameResponse(int gameID) {
 }

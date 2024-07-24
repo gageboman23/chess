@@ -1,4 +1,4 @@
-package server.Requests;
+package Requests;
 
 public record JoinGameRequest(String authToken, String playerColor, int gameID) {
 }

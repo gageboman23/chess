@@ -1,3 +1,3 @@
-package server.Requests;
+package Requests;
 
 public record ListGamesRequest(String authToken) {}
