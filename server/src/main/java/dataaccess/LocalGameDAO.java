@@ -17,7 +17,7 @@ public class LocalGameDAO implements GameDAOBase {
     }
 
     @Override
-    public GameData getGame(String gameID) throws DataAccessException {
+    public GameData getGame(Integer gameID) throws DataAccessException {
         return gameMap.get(gameID);
     }
 
