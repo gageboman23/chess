@@ -7,12 +7,12 @@ import server.Responses.ErrorResponse;
 import service.RegisterService;
 import spark.*;
 
-public class RegisterHandler{
+public class LoginHandler{
 
-    private final RegisterService registerService = new RegisterService();
+    private final LoginService loginService = new LoginService();
 
     public Object handle(Request req, Response res) throws DataAccessException {
-        System.out.println("Register Handler");
+        System.out.println("Login Handler");
 
         var newUser = new Gson().fromJson(req.body(), UserData.class);
         Object respObj;
@@ -41,4 +41,4 @@ public class RegisterHandler{
         return new Gson().toJson(respObj);
     }
 }
- // this is where I will receive the register request, deserialize the json, pass to service, and when i get it back, reserialize and return proper codes for behavior.
+// this is where I will receive the register request, deserialize the json, pass to service, and when i get it back, reserialize and return proper codes for behavior.

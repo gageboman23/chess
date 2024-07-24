@@ -19,13 +19,13 @@ public class LocalUserDAO implements UserDAOBase{
     }
 
     @Override
-    public void deleteUser(String username) {
+    public void deleteUser(String username) throws DataAccessException{
         userMap.remove(username);
 
     }
 
     @Override
-    public void clear() {
+    public void clear() throws DataAccessException{
         userMap.clear();
     }
 }
