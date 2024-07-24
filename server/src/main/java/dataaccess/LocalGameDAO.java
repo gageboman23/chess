@@ -3,29 +3,36 @@ package dataaccess;
 import model.AuthData;
 import model.GameData;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 public class LocalGameDAO implements GameDAOBase {
 
-    static HashMap<String, GameData> GameMap = new HashMap<>();
+    static HashMap<Integer, GameData> gameMap = new HashMap<>();
 
     @Override
     public void insertGame(GameData gameData) throws DataAccessException {
-
+        gameMap.put(gameData.gameID(), gameData);
     }
 
     @Override
     public GameData getGame(String gameID) throws DataAccessException {
-        return null;
+        return gameMap.get(gameID);
     }
 
     @Override
-    public void deleteAuth(String gameID) throws DataAccessException {
+    public Collection<GameData> listGames(String authToken) throws DataAccessException {
+        return gameMap.values();
+    }
 
+    @Override
+    public void deleteGame(String gameID) throws DataAccessException {
+        gameMap.remove(gameID);
     }
 
     @Override
     public void clear() throws DataAccessException{
-        GameMap.clear();
+        gameMap.clear();
     }
 }
