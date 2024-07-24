@@ -12,7 +12,5 @@ public interface GameDAOBase {
 
     Collection<GameData> listGames(String authToken) throws DataAccessException;
 
-    void deleteGame(String gameID) throws DataAccessException;
-
     void clear() throws DataAccessException;
 }

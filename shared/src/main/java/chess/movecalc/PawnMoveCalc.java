@@ -100,21 +100,23 @@ public class PawnMoveCalc implements PieceMoveCalc {
         return blackMoves;
     }
 
-    private void whitePawn(ChessPosition position, int startRow, int startCol, ChessGame.TeamColor myPieceColor, Collection<ChessMove> whiteMoves, ChessPiece leftDiag, ChessPiece rightDiag) {
+    private void whitePawn(ChessPosition pos, int startRow, int startCol, ChessGame.TeamColor myPieceColor,
+                           Collection<ChessMove> whiteMoves, ChessPiece leftDiag, ChessPiece rightDiag) {
         if (leftDiag != null && leftDiag.getTeamColor() != myPieceColor) {
-            whiteMoves.add(new ChessMove(position, new ChessPosition(startRow + 1, startCol - 1), null));
+            whiteMoves.add(new ChessMove(pos, new ChessPosition(startRow + 1, startCol - 1), null));
         }
         if (rightDiag != null && rightDiag.getTeamColor() != myPieceColor) {
-            whiteMoves.add(new ChessMove(position, new ChessPosition(startRow + 1, startCol + 1), null));
+            whiteMoves.add(new ChessMove(pos, new ChessPosition(startRow + 1, startCol + 1), null));
         }
     }
 
-    private void blackPawn(ChessPosition position, int startRow, int startCol, ChessGame.TeamColor myPieceColor, Collection<ChessMove> blackMoves, ChessPiece leftDiag, ChessPiece rightDiag) {
+    private void blackPawn(ChessPosition pos, int startRow, int startCol, ChessGame.TeamColor myPieceColor,
+                           Collection<ChessMove> blackMoves, ChessPiece leftDiag, ChessPiece rightDiag) {
         if (leftDiag != null && leftDiag.getTeamColor() != myPieceColor) {
-            blackMoves.add(new ChessMove(position, new ChessPosition(startRow - 1, startCol - 1), null));
+            blackMoves.add(new ChessMove(pos, new ChessPosition(startRow - 1, startCol - 1), null));
         }
         if (rightDiag != null && rightDiag.getTeamColor() != myPieceColor) {
-            blackMoves.add(new ChessMove(position, new ChessPosition(startRow - 1, startCol + 1), null));
+            blackMoves.add(new ChessMove(pos, new ChessPosition(startRow - 1, startCol + 1), null));
         }
     }
 }

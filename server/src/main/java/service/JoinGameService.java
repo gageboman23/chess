@@ -35,13 +35,15 @@ public class JoinGameService {
             if (requestedGameData.blackUsername() != null) {
                 return new ErrorResponse("Error: already taken");
             }
-            gameDAO.insertGame(new GameData(requestedGameData.gameID(), requestedGameData.whiteUsername(), authDAO.getAuth(authToken).username(), requestedGameData.gameName(), requestedGameData.game()));
+            gameDAO.insertGame(new GameData(requestedGameData.gameID(), requestedGameData.whiteUsername(),
+                    authDAO.getAuth(authToken).username(), requestedGameData.gameName(), requestedGameData.game()));
             return null;
         }
         if (requestedGameData.whiteUsername() != null) {
             return new ErrorResponse("Error: already taken");
         }
-        gameDAO.insertGame(new GameData(requestedGameData.gameID(), authDAO.getAuth(authToken).username(), requestedGameData.blackUsername(), requestedGameData.gameName(), requestedGameData.game()));
+        gameDAO.insertGame(new GameData(requestedGameData.gameID(), authDAO.getAuth(authToken).username(),
+                requestedGameData.blackUsername(), requestedGameData.gameName(), requestedGameData.game()));
         return null;
 
     }

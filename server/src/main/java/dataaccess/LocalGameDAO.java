@@ -28,11 +28,6 @@ public class LocalGameDAO implements GameDAOBase {
     }
 
     @Override
-    public void deleteGame(String gameID) throws DataAccessException {
-        gameMap.remove(gameID);
-    }
-
-    @Override
     public void clear() throws DataAccessException {
         gameMap.clear();
     }

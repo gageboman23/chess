@@ -7,8 +7,6 @@ public interface UserDAOBase {
 
     UserData getUser(String username) throws DataAccessException;
 
-    void deleteUser(String username) throws DataAccessException;
-
     void clear() throws DataAccessException;
 
 }

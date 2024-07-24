@@ -144,34 +144,40 @@ public class ChessGame {
      */
     public boolean isInCheck(TeamColor teamColor) {
         ChessPosition kingPos = findPosition(board, teamColor, ChessPiece.PieceType.KING);
-        Collection<ChessMove> enemyMoves = new ArrayList<>();
         boolean checkOrNah = false;
 
         for (int row = 1; row < 9; row++) {
             for (int col = 1; col < 9; col++) {
                 ChessPosition pos = new ChessPosition(row, col);
                 ChessPiece piece = board.getPiece(pos);
-                if (piece == null) {
-                } else if (piece.getTeamColor() == teamColor) {
-                } else {
-                    enemyMoves = piece.pieceMoves(getBoard(), pos);
-                    for (ChessMove move : enemyMoves) {
-                        ChessPosition endPos = move.getEndPosition();
-                        if (endPos.equals(kingPos)) {
-                            checkOrNah = true;
-                            break;
-                        }
-                    }
+
+                if (piece == null || piece.getTeamColor() == teamColor) {
+                    continue;
+                }
+
+                if (isKingInCheckFromPiece(piece, pos, kingPos)) {
+                    checkOrNah = true;
+                    break;
                 }
             }
         }
         return checkOrNah;
     }
 
+    private boolean isKingInCheckFromPiece(ChessPiece piece, ChessPosition pos, ChessPosition kingPos) {
+        Collection<ChessMove> enemyMoves = piece.pieceMoves(getBoard(), pos);
+        for (ChessMove move : enemyMoves) {
+            if (move.getEndPosition().equals(kingPos)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o){ return true;}
+        if (o == null || getClass() != o.getClass()){ return false;}
         ChessGame chessGame = (ChessGame) o;
         return Objects.deepEquals(getBoard(), chessGame.getBoard()) && getTeamTurn() == chessGame.getTeamTurn();
     }
