@@ -6,7 +6,7 @@ import responses.ErrorResponse;
 import service.ListGamesService;
 import spark.*;
 
-public class ListGamesHandler {
+public class ListGamesHandler implements BaseHandler{
 
     private final ListGamesService listGamesService = new ListGamesService();
     Object respObj;
@@ -17,16 +17,7 @@ public class ListGamesHandler {
         var listGamesRequest = req.headers("authorization");
         try {
             respObj = listGamesService.listGames(listGamesRequest);
-
-            if (respObj instanceof ErrorResponse errorResponse) {
-                if (errorResponse.message().equals("Error: unauthorized")) {
-                    res.status(401);
-                } else {
-                    res.status(500);
-                }
-            } else {
-                res.status(200);
-            }
+            responseSwitch(req, res,respObj);
         } catch (DataAccessException e) {
             res.status(500);
             respObj = new ErrorResponse("Error: internal server error");

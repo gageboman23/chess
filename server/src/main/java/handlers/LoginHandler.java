@@ -7,7 +7,7 @@ import responses.ErrorResponse;
 import service.LoginService;
 import spark.*;
 
-public class LoginHandler {
+public class LoginHandler implements BaseHandler{
 
     private final LoginService loginService = new LoginService();
 
@@ -18,16 +18,7 @@ public class LoginHandler {
         Object respObj;
         try {
             respObj = loginService.login(loginRequest);
-
-            if (respObj instanceof ErrorResponse errorResponse) {
-                if (errorResponse.message().equals("Error: unauthorized")) {
-                    res.status(401);
-                } else {
-                    res.status(500);
-                }
-            } else {
-                res.status(200);
-            }
+            responseSwitch(req, res,respObj);
         } catch (DataAccessException e) {
             res.status(500);
             respObj = new ErrorResponse("Error: internal server error");

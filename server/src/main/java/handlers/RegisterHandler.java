@@ -7,7 +7,7 @@ import responses.ErrorResponse;
 import service.RegisterService;
 import spark.*;
 
-public class RegisterHandler {
+public class RegisterHandler implements BaseHandler{
 
     private final RegisterService registerService = new RegisterService();
 
@@ -18,22 +18,7 @@ public class RegisterHandler {
         Object respObj;
         try {
             respObj = registerService.register(newUser);
-
-            if (respObj instanceof ErrorResponse errorResponse) {
-                switch (errorResponse.message()) {
-                    case "Error: bad request":
-                        res.status(400);
-                        break;
-                    case "Error: already taken":
-                        res.status(403);
-                        break;
-                    default:
-                        res.status(500);
-                        break;
-                }
-            } else {
-                res.status(200);
-            }
+            responseSwitch(req, res,respObj);
         } catch (DataAccessException e) {
             res.status(500);
             respObj = new ErrorResponse("Error: internal server error");

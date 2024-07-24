@@ -2,47 +2,12 @@ package chess.movecalc;
 
 import chess.*;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 public class KingMoveCalc implements PieceMoveCalc {
     @Override
     public Collection<ChessMove> calculateMoves(ChessBoard board, ChessPosition position) {
-        Collection<ChessMove> moves = new ArrayList<>();
         int[][] directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}, {1, 1}, {-1, -1}, {-1, 1}, {1, -1}};
-
-        int startRow = position.getRow();
-        int startCol = position.getColumn();
-
-        //bishops color
-        ChessPiece myPiece = board.getPiece(new ChessPosition(startRow, startCol));
-        ChessGame.TeamColor myPieceColor = myPiece.getTeamColor();
-
-
-        for (int[] direction : directions) {
-            int row = startRow;
-            int col = startCol;
-
-            row += direction[0];
-            col += direction[1];
-
-            // Check if the new position is within the bounds of the board
-            if (row < 1 || row > 8 || col < 1 || col > 8) {
-                continue;
-            }
-
-            ChessPiece pieceAtPosition = board.getPiece(new ChessPosition(row, col));
-
-            if (pieceAtPosition != null && pieceAtPosition != myPiece) {
-                // If it's an enemy piece, add the move (capture)
-                if (pieceAtPosition.getTeamColor() != myPieceColor) {
-                    moves.add(new ChessMove(position, new ChessPosition(row, col), null));
-                }
-                // Stop adding moves in this direction
-                continue;
-            }
-            moves.add(new ChessMove(position, new ChessPosition(row, col), null));
-        }
-        return moves;
+        return KnightKingBase.knightKingBase(board, position, directions);
     }
 }
