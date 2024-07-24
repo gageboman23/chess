@@ -1,4 +1,4 @@
-package servicetests;
+package service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -9,8 +9,6 @@ import org.junit.jupiter.api.Test;
 import requests.LoginRequest;
 import responses.ErrorResponse;
 import responses.LoginResponse;
-import service.LoginService;
-import service.ClearService;
 
 public class LoginServiceTest {
 

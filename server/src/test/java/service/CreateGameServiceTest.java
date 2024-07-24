@@ -1,66 +1,59 @@
-package servicetests;
+package service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import dataaccess.*;
 import model.AuthData;
-import model.GameData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import requests.CreateGameRequest;
+import responses.CreateGameResponse;
 import responses.ErrorResponse;
-import responses.ListGamesResponse;
-import service.ListGamesService;
-import service.ClearService;
 
+public class CreateGameServiceTest {
 
-public class ListGamesServiceTest {
-
-    private ListGamesService listGamesService;
+    private CreateGameService createGameService;
 
     @BeforeEach
     public void setUp() throws DataAccessException {
-        listGamesService = new ListGamesService();
+        createGameService = new CreateGameService();
         ClearService clearService = new ClearService();
         clearService.clear();
     }
 
     @Test
-    public void testListGamesSuccess() throws DataAccessException {
+    public void testCreateGameSuccess() throws DataAccessException {
         // Arrange
         String authToken = "validAuthToken";
+        CreateGameRequest createGameRequest = new CreateGameRequest("newGame");
 
         // Insert a valid auth token into the AuthDAO
         AuthDAOBase authDAO = new LocalAuthDAO();
         authDAO.insertAuth(new AuthData(authToken, "username"));
 
-        // Insert some games into the GameDAO
-        GameDAOBase gameDAO = new LocalGameDAO();
-        gameDAO.insertGame(new GameData(1, "player1", null, "testGame1", null));
-        gameDAO.insertGame(new GameData(2, null, "player2", "testGame2", null));
-
         // Act
         Object response = null;
         try {
-            response = listGamesService.listGames(authToken);
+            response = createGameService.createGame(createGameRequest, authToken);
         } catch (DataAccessException e) {
             fail("Exception thrown: " + e.getMessage());
         }
 
         // Assert
-        assertInstanceOf(ListGamesResponse.class, response);
-        ListGamesResponse listGamesResponse = (ListGamesResponse) response;
-        assertEquals(2, listGamesResponse.games().size());
+        assertInstanceOf(CreateGameResponse.class, response);
+        CreateGameResponse createGameResponse = (CreateGameResponse) response;
     }
 
     @Test
-    public void testListGamesUnauthorized() {
+    public void testCreateGameMissingFields() {
         // Arrange
-        String authToken = "invalidAuthToken";
+        String authToken = "validAuthToken";
+        CreateGameRequest createGameRequest = new CreateGameRequest(null);
 
         // Act
         Object response = null;
         try {
-            response = listGamesService.listGames(authToken);
+            response = createGameService.createGame(createGameRequest, authToken);
         } catch (DataAccessException e) {
             fail("Exception thrown: " + e.getMessage());
         }
@@ -68,6 +61,6 @@ public class ListGamesServiceTest {
         // Assert
         assertInstanceOf(ErrorResponse.class, response);
         ErrorResponse errorResponse = (ErrorResponse) response;
-        assertEquals("Error: unauthorized", errorResponse.message());
+        assertEquals("Error: bad request", errorResponse.message());
     }
 }

@@ -1,4 +1,4 @@
-package servicetests;
+package service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -9,8 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import requests.JoinGameRequest;
 import responses.ErrorResponse;
-import service.JoinGameService;
-import service.ClearService;
 
 public class JoinGameServiceTest {
 

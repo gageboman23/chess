@@ -1,56 +1,53 @@
-package servicetests;
+package service;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 import dataaccess.*;
-import model.AuthData;
+import model.UserData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import responses.ErrorResponse;
-import service.LogoutService;
-import service.ClearService;
+import responses.RegisterResponse;
 
-public class LogoutServiceTest {
+public class RegisterServiceTest {
 
-    private LogoutService logoutService;
-    private AuthDAOBase authDAO;
+    private RegisterService registerService;
 
     @BeforeEach
     public void setUp() throws DataAccessException {
-        logoutService = new LogoutService();
+        registerService = new RegisterService();
         ClearService clearService = new ClearService();
         clearService.clear();
-        authDAO = new LocalAuthDAO();
     }
 
     @Test
-    public void testLogoutSuccess() throws DataAccessException {
+    public void testRegisterSuccess() {
         // Arrange
-        String authToken = "validToken";
-        authDAO.insertAuth(new AuthData(authToken, "username"));
+        UserData userData = new UserData("username", "password", "email@example.com");
 
         // Act
         Object response = null;
         try {
-            response = logoutService.logout(authToken);
+            response = registerService.register(userData);
         } catch (DataAccessException e) {
             fail("Exception thrown: " + e.getMessage());
         }
 
         // Assert
-        assertNull(response);
-        assertNull(authDAO.getAuth(authToken));
+        assertInstanceOf(RegisterResponse.class, response);
+        RegisterResponse registerResponse = (RegisterResponse) response;
+        assertEquals("username", registerResponse.username());
+        assertNotNull(registerResponse.authToken());
     }
 
     @Test
-    public void testLogoutUnauthorized() {
+    public void testRegisterMissingFields() {
         // Arrange
-        String authToken = "invalidToken";
+        UserData userData = new UserData(null, "password", "email@example.com");
 
         // Act
         Object response = null;
         try {
-            response = logoutService.logout(authToken);
+            response = registerService.register(userData);
         } catch (DataAccessException e) {
             fail("Exception thrown: " + e.getMessage());
         }
@@ -58,6 +55,6 @@ public class LogoutServiceTest {
         // Assert
         assertInstanceOf(ErrorResponse.class, response);
         ErrorResponse errorResponse = (ErrorResponse) response;
-        assertEquals("Error: unauthorized", errorResponse.message());
+        assertEquals("Error: bad request", errorResponse.message());
     }
 }
