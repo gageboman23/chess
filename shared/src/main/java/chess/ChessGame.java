@@ -127,12 +127,12 @@ public class ChessGame {
         board.addPiece(startPos, null);
     }
 
-    public void undoMove(ChessMove move, ChessPiece PrevPiece) {
+    public void undoMove(ChessMove move, ChessPiece prevPiece) {
         ChessPosition startPos = move.getStartPosition();
         ChessPosition endPos = move.getEndPosition();
         ChessPiece newPiece = board.getPiece(endPos);
         board.addPiece(startPos, newPiece);
-        board.addPiece(endPos, PrevPiece);
+        board.addPiece(endPos, prevPiece);
     }
 
 
