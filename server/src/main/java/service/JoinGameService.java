@@ -42,8 +42,10 @@ public class JoinGameService {
         if (requestedGameData.whiteUsername() != null) {
             return new ErrorResponse("Error: already taken");
         }
-        gameDAO.insertGame(new GameData(requestedGameData.gameID(), authDAO.getAuth(authToken).username(),
-                requestedGameData.blackUsername(), requestedGameData.gameName(), requestedGameData.game()));
+        GameData updatedGame =new GameData(requestedGameData.gameID(), authDAO.getAuth(authToken).username(),
+                requestedGameData.blackUsername(), requestedGameData.gameName(), requestedGameData.game());
+
+        gameDAO.insertGame(updatedGame);
         return null;
 
     }

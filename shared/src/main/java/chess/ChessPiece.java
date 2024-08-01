@@ -14,12 +14,11 @@ import java.util.Objects;
 public class ChessPiece {
     private ChessGame.TeamColor pieceColor;
     private PieceType type;
-    private PieceMoveCalc moveCalculator;
+
 
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
         this.pieceColor = pieceColor;
         this.type = type;
-        this.moveCalculator = createMoveCalculator(type);
     }
 
     private PieceMoveCalc createMoveCalculator(PieceType type) {
@@ -75,7 +74,9 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        return moveCalculator.calculateMoves(board, myPosition);
+        PieceMoveCalc moveCalc = createMoveCalculator(type);
+        assert moveCalc != null;
+        return moveCalc.calculateMoves(board, myPosition);
     }
 
     @Override
