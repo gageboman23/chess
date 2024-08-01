@@ -17,10 +17,10 @@ public class SQLGameDAO implements GameDAOBase{
         }
     }
 
-    SQLconfig NewConfig = new SQLconfig();
+    SQLconfig newConfig = new SQLconfig();
 
     private void configureDatabase() throws DataAccessException {
-        NewConfig.config(createStatements);
+        newConfig.config(createStatements);
     }
 
 
