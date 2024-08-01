@@ -1,14 +1,10 @@
 package service;
 
+import dataaccess.*;
 import requests.CreateGameRequest;
 import responses.CreateGameResponse;
 import responses.ErrorResponse;
 import chess.ChessGame;
-import dataaccess.AuthDAOBase;
-import dataaccess.DataAccessException;
-import dataaccess.GameDAOBase;
-import dataaccess.LocalAuthDAO;
-import dataaccess.LocalGameDAO;
 import model.GameData;
 
 import java.util.Random;
@@ -16,7 +12,7 @@ import java.util.Random;
 
 public class CreateGameService {
 
-    GameDAOBase gameDAO = new LocalGameDAO();
+    GameDAOBase gameDAO = new SQLGameDAO();
     AuthDAOBase authDAO = new LocalAuthDAO();
 
 
