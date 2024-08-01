@@ -38,6 +38,3 @@ public class RegisterService {
 
 
 }
-// one pub method "register"
-
-// makes calls to all DataAccess methods necessary
