@@ -24,10 +24,6 @@ public interface BaseHandler {
                 case "Error: already taken":
                     res.status(403);
                     break;
-
-                default:
-                    res.status(500);
-                    break;
             }
         } else {
             res.status(200);

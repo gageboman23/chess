@@ -49,10 +49,12 @@ public class SQLGameDAO implements GameDAOBase{
     public void insertGame(GameData gameData) throws DataAccessException {
         Gson serializer = new Gson();
         try (Connection conn = DatabaseManager.getConnection()) {
-            String update = "INSERT into gameData (gameID, whiteUsername, blackUsername, gameName, game) VALUES (int, default, default, ?, ?)";
+            String update = "INSERT into gameData (gameID, whiteUsername, blackUsername, gameName, game) VALUES (?, default, default, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(update);
             stmt.setInt(1, gameData.gameID());
-            stmt.setString(2, serializer.toJson(gameData.game()));
+            stmt.setString(2, gameData.gameName());
+            String gameDataJSON = serializer.toJson(gameData.game());
+            stmt.setString(3, gameDataJSON);
             stmt.executeUpdate();
         }
         catch (Exception e) {
