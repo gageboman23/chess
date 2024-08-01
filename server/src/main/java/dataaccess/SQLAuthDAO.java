@@ -61,7 +61,7 @@ public class SQLAuthDAO implements AuthDAOBase{
             stmt.setString(1, authToken);
             ResultSet rs = stmt.executeQuery();
             if (!rs.next()) {
-                throw new DataAccessException("Error: unauthorized");
+                return null;
             }
             String username = rs.getString("username");
             return new AuthData(authToken, username);

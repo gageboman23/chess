@@ -3,6 +3,7 @@ package service;
 import dataaccess.*;
 import model.AuthData;
 import model.UserData;
+import org.mindrot.jbcrypt.BCrypt;
 import responses.ErrorResponse;
 import responses.RegisterResponse;
 
@@ -24,9 +25,9 @@ public class RegisterService {
         if (userDAO.getUser(userData.username()) != null) {
             return new ErrorResponse("Error: already taken");
         }
-
-        userDAO.insertUser(userData);
-        AuthData authData = createAuth(userData);
+        UserData userDataHashed = new UserData(userData.username(), hashPassword(userData.password()), userData.email());
+        userDAO.insertUser(userDataHashed);
+        AuthData authData = createAuth(userDataHashed);
         authDAO.insertAuth(authData);
         return new RegisterResponse(authData.username(), authData.authToken());
     }
@@ -34,6 +35,10 @@ public class RegisterService {
     private AuthData createAuth(UserData userData) {
         String authToken = UUID.randomUUID().toString();
         return new AuthData(authToken, userData.username());
+    }
+
+    private String hashPassword(String password) {
+        return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
 
