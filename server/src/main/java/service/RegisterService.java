@@ -11,8 +11,8 @@ import java.util.UUID;
 public class RegisterService {
 
 
-    UserDAOBase userDAO = new LocalUserDAO();
-    AuthDAOBase authDAO = new LocalAuthDAO();
+    UserDAOBase userDAO = new SQLUserDAO();
+    AuthDAOBase authDAO = new SQLAuthDAO();
 
 
     public Object register(UserData userData) throws DataAccessException {

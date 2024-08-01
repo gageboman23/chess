@@ -5,7 +5,6 @@ import model.GameData;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.sql.*;
 import com.google.gson.Gson;
 

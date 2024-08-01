@@ -5,7 +5,7 @@ import dataaccess.*;
 
 public class LogoutService {
 
-    AuthDAOBase authDAO = new LocalAuthDAO();
+    AuthDAOBase authDAO = new SQLAuthDAO();
 
 
     public Object logout(String authToken) throws DataAccessException {

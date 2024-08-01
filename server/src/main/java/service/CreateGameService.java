@@ -13,7 +13,7 @@ import java.util.Random;
 public class CreateGameService {
 
     GameDAOBase gameDAO = new SQLGameDAO();
-    AuthDAOBase authDAO = new LocalAuthDAO();
+    AuthDAOBase authDAO = new SQLAuthDAO();
 
 
     public Object createGame(CreateGameRequest createGameRequest, String authToken) throws DataAccessException {

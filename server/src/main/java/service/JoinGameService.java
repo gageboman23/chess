@@ -8,8 +8,8 @@ import model.GameData;
 
 public class JoinGameService {
 
-    GameDAOBase gameDAO = new LocalGameDAO();
-    AuthDAOBase authDAO = new LocalAuthDAO();
+    GameDAOBase gameDAO = new SQLGameDAO();
+    AuthDAOBase authDAO = new SQLAuthDAO();
 
 
     public Object joinGame(JoinGameRequest joinGameRequest, String authToken) throws DataAccessException {

@@ -2,18 +2,14 @@ package service;
 
 import responses.ListGamesResponse;
 import responses.ErrorResponse;
-import dataaccess.AuthDAOBase;
-import dataaccess.DataAccessException;
-import dataaccess.GameDAOBase;
-import dataaccess.LocalAuthDAO;
-import dataaccess.LocalGameDAO;
+import dataaccess.*;
 
 import java.util.Collection;
 
 public class ListGamesService {
 
-    GameDAOBase gameDAO = new LocalGameDAO();
-    AuthDAOBase authDAO = new LocalAuthDAO();
+    GameDAOBase gameDAO = new SQLGameDAO();
+    AuthDAOBase authDAO = new SQLAuthDAO();
 
 
     public Object listGames(String authoken) throws DataAccessException {

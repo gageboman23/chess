@@ -11,8 +11,8 @@ import java.util.UUID;
 
 public class LoginService {
 
-    UserDAOBase userDAO = new LocalUserDAO();
-    AuthDAOBase authDAO = new LocalAuthDAO();
+    UserDAOBase userDAO = new SQLUserDAO();
+    AuthDAOBase authDAO = new SQLAuthDAO();
 
 
     public Object login(LoginRequest loginRequest) throws DataAccessException {

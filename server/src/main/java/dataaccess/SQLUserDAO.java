@@ -5,8 +5,12 @@ import java.sql.*;
 
 public class SQLUserDAO implements UserDAOBase{
 
-    public SQLUserDAO() throws Exception {
-        configureDatabase();
+    public SQLUserDAO() {
+        try {
+            configureDatabase();
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void configureDatabase() throws DataAccessException {
