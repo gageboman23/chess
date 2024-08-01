@@ -18,13 +18,13 @@ public class SQLUserDAOTest {
     }
 
     @Test
-    public void testInsertUser_Positive() {
+    public void testInsertUserPositive() {
         UserData userData = new UserData("username1", "password1", "email1@example.com");
         assertDoesNotThrow(() -> userDAO.insertUser(userData));
     }
 
     @Test
-    public void testInsertUser_Negative() throws DataAccessException {
+    public void testInsertUserNegative() throws DataAccessException {
         UserData userData = new UserData("username1", "password1", "email1@example.com");
         userDAO.insertUser(userData);
 
@@ -34,7 +34,7 @@ public class SQLUserDAOTest {
     }
 
     @Test
-    public void testGetUser_Positive() throws DataAccessException {
+    public void testGetUserPositive() throws DataAccessException {
         UserData userData = new UserData("username1", "password1", "email1@example.com");
         userDAO.insertUser(userData);
         assertDoesNotThrow(() -> {
@@ -47,13 +47,13 @@ public class SQLUserDAOTest {
     }
 
     @Test
-    public void testGetUser_Negative() throws DataAccessException {
+    public void testGetUserNegative() throws DataAccessException {
         // Attempt to retrieve a non-existent user should return null
         assertNull(userDAO.getUser("nonExistentUser"));
     }
 
     @Test
-    public void testClear_Positive() throws DataAccessException {
+    public void testClearPositive() throws DataAccessException {
         UserData userData = new UserData("username1", "password1", "email1@example.com");
         userDAO.insertUser(userData);
 

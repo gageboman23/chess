@@ -20,19 +20,19 @@ public class SQLGameDAOTest {
     }
 
     @Test
-    public void testInsertGame_Positive() {
+    public void testInsertGamePositive() {
         GameData gameData = new GameData(1, "whitePlayer", "blackPlayer", "GameName", new ChessGame());
         assertDoesNotThrow(() -> gameDAO.insertGame(gameData));
     }
 
     @Test
-    public void testInsertGame_Negative() {
+    public void testInsertGameNegative() {
         GameData invalidGameData = new GameData(1, null, null, null, null); // Invalid game data
         assertThrows(DataAccessException.class, () -> gameDAO.insertGame(invalidGameData));
     }
 
     @Test
-    public void testGetGame_Positive() throws DataAccessException {
+    public void testGetGamePositive() throws DataAccessException {
         GameData gameData = new GameData(1, "whitePlayer", "blackPlayer", "GameName", new ChessGame());
         gameDAO.insertGame(gameData);
         assertDoesNotThrow(() -> {
@@ -44,13 +44,13 @@ public class SQLGameDAOTest {
     }
 
     @Test
-    public void testGetGame_Negative() {
+    public void testGetGameNegative() {
         // Attempt to retrieve a non-existent game should throw DataAccessException
         assertThrows(DataAccessException.class, () -> gameDAO.getGame(999));
     }
 
     @Test
-    public void testListGames_Positive() throws DataAccessException {
+    public void testListGamesPositive() throws DataAccessException {
         GameData gameData1 = new GameData(1, "whitePlayer1", "blackPlayer1", "GameName1", new ChessGame());
         GameData gameData2 = new GameData(2, "whitePlayer2", "blackPlayer2", "GameName2", new ChessGame());
         gameDAO.insertGame(gameData1);
@@ -64,7 +64,7 @@ public class SQLGameDAOTest {
     }
 
     @Test
-    public void testListGames_Negative() throws DataAccessException {
+    public void testListGamesNegative() throws DataAccessException {
         // Invalid authToken should return an empty list or some error response
         Collection<GameData> games = gameDAO.listGames("invalidAuthToken");
         assertTrue(games.isEmpty()); // Assuming it returns an empty collection for invalid auth tokens
@@ -72,7 +72,7 @@ public class SQLGameDAOTest {
 
 
     @Test
-    public void testClear_Positive() throws DataAccessException {
+    public void testClearPositive() throws DataAccessException {
         GameData gameData = new GameData(1, "whitePlayer", "blackPlayer", "GameName", new ChessGame());
         gameDAO.insertGame(gameData);
 
@@ -83,7 +83,7 @@ public class SQLGameDAOTest {
     }
 
     @Test
-    public void testDeleteGame_Positive() throws DataAccessException {
+    public void testDeleteGamePositive() throws DataAccessException {
         GameData gameData = new GameData(1, "whitePlayer", "blackPlayer", "GameName", new ChessGame());
         gameDAO.insertGame(gameData);
         assertDoesNotThrow(() -> {
@@ -93,7 +93,7 @@ public class SQLGameDAOTest {
     }
 
     @Test
-    public void testDeleteGame_Negative() {
+    public void testDeleteGameNegative() {
         // Attempt to delete a non-existent game should not throw an exception
         assertDoesNotThrow(() -> gameDAO.deleteGame(999));
     }

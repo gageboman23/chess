@@ -24,18 +24,10 @@ public class SQLAuthDAO implements AuthDAOBase{
             """
     };
 
+    SQLconfig NewConfig = new SQLconfig();
+
     private void configureDatabase() throws DataAccessException {
-        DatabaseManager.createDatabase();
-        try (var conn = DatabaseManager.getConnection()) {
-            for (var statement : createStatements) {
-                try (var preparedStatement = conn.prepareStatement(statement)) {
-                    preparedStatement.executeUpdate();
-                }
-            }
-        }
-        catch (Exception e){
-            throw new DataAccessException(e.getMessage());
-        }
+        NewConfig.config(createStatements);
     }
 
 

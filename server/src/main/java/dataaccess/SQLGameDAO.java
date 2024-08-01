@@ -2,7 +2,6 @@ package dataaccess;
 
 import chess.ChessGame;
 import model.GameData;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.sql.*;
@@ -18,19 +17,12 @@ public class SQLGameDAO implements GameDAOBase{
         }
     }
 
+    SQLconfig NewConfig = new SQLconfig();
+
     private void configureDatabase() throws DataAccessException {
-        DatabaseManager.createDatabase();
-        try (var conn = DatabaseManager.getConnection()) {
-            for (var statement : createStatements) {
-                try (var preparedStatement = conn.prepareStatement(statement)) {
-                    preparedStatement.executeUpdate();
-                }
-            }
-        }
-        catch (Exception e){
-            throw new DataAccessException(e.getMessage());
-        }
+        NewConfig.config(createStatements);
     }
+
 
     private final String[] createStatements = {
             """

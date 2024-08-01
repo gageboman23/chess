@@ -17,19 +17,19 @@ public class SQLAuthDAOTest {
     }
 
     @Test
-    public void testInsertAuth_Positive() {
+    public void testInsertAuthPositive() {
         AuthData authData = new AuthData("authToken1", "username1");
         assertDoesNotThrow(() -> authDAO.insertAuth(authData));
     }
 
     @Test
-    public void testInsertAuth_Negative() {
+    public void testInsertAuthNegative() {
         AuthData invalidAuthData = new AuthData(null, null); // Invalid auth data
         assertThrows(RuntimeException.class, () -> authDAO.insertAuth(invalidAuthData));
     }
 
     @Test
-    public void testGetAuth_Positive() throws DataAccessException {
+    public void testGetAuthPositive() throws DataAccessException {
         AuthData authData = new AuthData("authToken1", "username1");
         authDAO.insertAuth(authData);
         assertDoesNotThrow(() -> {
@@ -41,13 +41,13 @@ public class SQLAuthDAOTest {
     }
 
     @Test
-    public void testGetAuth_Negative() throws DataAccessException {
+    public void testGetAuthNegative() throws DataAccessException {
         // Attempt to retrieve a non-existent auth token should return null
         assertNull(authDAO.getAuth("nonExistentAuthToken"));
     }
 
     @Test
-    public void testDeleteAuth_Positive() throws DataAccessException {
+    public void testDeleteAuthPositive() throws DataAccessException {
         AuthData authData = new AuthData("authToken1", "username1");
         authDAO.insertAuth(authData);
         assertDoesNotThrow(() -> {
@@ -57,13 +57,13 @@ public class SQLAuthDAOTest {
     }
 
     @Test
-    public void testDeleteAuth_Negative() {
+    public void testDeleteAuthNegative() {
         // Attempt to delete a non-existent auth token should throw DataAccessException
         assertThrows(DataAccessException.class, () -> authDAO.deleteAuth("nonExistentAuthToken"));
     }
 
     @Test
-    public void testClear_Positive() throws DataAccessException {
+    public void testClearPositive() throws DataAccessException {
         AuthData authData = new AuthData("authToken1", "username1");
         authDAO.insertAuth(authData);
 
