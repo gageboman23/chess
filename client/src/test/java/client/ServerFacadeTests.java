@@ -2,6 +2,7 @@ package client;
 
 import model.GameData;
 import model.UserData;
+import server.Server;
 import org.junit.jupiter.api.*;
 import responses.GameInfo;
 
@@ -9,7 +10,6 @@ import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ServerFacadeTests {
 
     private static Server server;
@@ -30,7 +30,7 @@ public class ServerFacadeTests {
 
     @BeforeEach
     public void clearDatabase() throws Exception {
-        // Implement a method to clear the database before each test
+        facade.clearDB();
     }
 
     @Test

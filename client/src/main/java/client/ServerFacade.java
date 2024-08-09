@@ -67,6 +67,11 @@ public class ServerFacade {
         return this.makeRequest("PUT", path, req, GameData.class);
     }
 
+    public void clearDB() throws Exception {
+        var path = "/db";
+        this.makeRequest("DELETE", path, null, null);
+    }
+
 
     private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) throws Exception {
         try {
