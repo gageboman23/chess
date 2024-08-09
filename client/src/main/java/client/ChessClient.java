@@ -34,12 +34,12 @@ public class ChessClient {
             var params = Arrays.copyOfRange(tokens, 1, tokens.length);
             return switch (cmd) {
                 case "register" -> register(params);
-                case "login" -> logIn(params);
-                case "logout" -> logout();
-                case "creategame" -> createGame(params);
-                case "joingame" -> joinGame(params);
-                case "listgames" -> listGames();
-                case "observegame" -> observeGame(params);
+                case "logIn" -> logIn(params);
+                case "logOut" -> logout();
+                case "createGame" -> createGame(params);
+                case "joinGame" -> joinGame(params);
+                case "listGames" -> listGames();
+                case "observeGame" -> observeGame(params);
                 case "quit" -> "quit";
                 default -> help();
             };
@@ -51,15 +51,15 @@ public class ChessClient {
     public String help() {
         if (state == State.SIGNEDOUT) {
             return """
-                    - signIn <username> <password>
                     - register <username> <password> <email>
+                    - logIn <username> <password>
                     - quit
                     - help
                     """;
         }
         return """
                 - help
-                - logout
+                - logOut
                 - createGame <game name>
                 - listGames
                 - joinGame <game ID> <player color>
