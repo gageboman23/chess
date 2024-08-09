@@ -1,12 +1,14 @@
 package client;
 
 import com.google.gson.Gson;
+import model.GameData;
 import model.UserData;
-import responses.LoginResponse;
-import responses.RegisterResponse;
+import requests.JoinGameRequest;
+import responses.*;
 
 import java.io.*;
 import java.net.*;
+import java.util.Collection;
 
 public class ServerFacade {
 
@@ -39,6 +41,30 @@ public class ServerFacade {
         var path = "/session";
         this.makeRequest("DELETE", path, null, null);
         authToken = null;
+    }
+
+    public void createGame(String name) throws Exception {
+        var path = "/game";
+        GameData game = new GameData(0, null, null, name, null);
+        CreateGameResponse res = this.makeRequest("POST", path, game, CreateGameResponse.class);
+    }
+
+    public GameData joinGame(int gameID, String color) throws Exception {
+        var path = "/game";
+        var req = new JoinGameRequest(color, gameID);
+        return this.makeRequest("PUT", path, req, GameData.class);
+    }
+
+    public Collection<GameInfo> listGames() throws Exception {
+        var path = "/game";
+        ListGamesResponse res = this.makeRequest("GET", path, null, ListGamesResponse.class);
+        return res.games();
+    }
+
+    public GameData observeGame(int gameID) throws Exception {
+        var path = "/game";
+        var req = new JoinGameRequest("empty", gameID);
+        return this.makeRequest("PUT", path, req, GameData.class);
     }
 
 
