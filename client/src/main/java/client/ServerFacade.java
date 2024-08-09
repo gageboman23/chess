@@ -2,6 +2,7 @@ package client;
 
 import com.google.gson.Gson;
 import model.UserData;
+import responses.LoginResponse;
 import responses.RegisterResponse;
 
 import java.io.*;
@@ -18,13 +19,28 @@ public class ServerFacade {
         serverUrl = url;
     }
 
-    public String signIn(String username, String password) throws Exception{
-        var path = "/session";
-        UserData user = new UserData(username, password, null);
+    public String register(String username, String password, String email) throws Exception {
+        var path = "/user";
+        UserData user = new UserData(username, password, email);
         RegisterResponse res = this.makeRequest("POST", path, user, RegisterResponse.class);
         authToken = res.authToken();
         return authToken;
     }
+
+    public String logIn(String username, String password) throws Exception{
+        var path = "/session";
+        UserData user = new UserData(username, password, null);
+        LoginResponse res = this.makeRequest("POST", path, user, LoginResponse.class);
+        authToken = res.authToken();
+        return authToken;
+    }
+
+    public void logout() throws Exception {
+        var path = "/session";
+        this.makeRequest("DELETE", path, null, null);
+        authToken = null;
+    }
+
 
     private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) throws Exception {
         try {

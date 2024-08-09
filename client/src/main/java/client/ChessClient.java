@@ -1,19 +1,10 @@
 package client;
 
-import chess.ChessBoard;
-import chess.ChessGame;
-import chess.ChessPiece;
-import chess.ChessPosition;
 import model.GameData;
 
-import java.io.PrintStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-
-import ui.*;
 
 public class ChessClient {
 
@@ -35,7 +26,7 @@ public class ChessClient {
             var cmd = (tokens.length > 0) ? tokens[0] : "help";
             var params = Arrays.copyOfRange(tokens, 1, tokens.length);
             return switch (cmd) {
-                case "signin" -> signIn(params);
+                case "signin" -> logIn(params);
                 case "register" -> register(params);
                 case "creategame" -> createGame(params);
                 case "logout" -> logout();
@@ -69,11 +60,26 @@ public class ChessClient {
                 """;
     }
 
-    public String signIn(String... params) throws Exception{
+    public String register(String... params) throws Exception {
+        if (params.length >= 3) {
+            String username = params[0];
+            String password = params[1];
+            String email = params[2];
+            server.register(username, password, email);
+            state = State.SIGNEDIN;
+        }
+        else {
+            throw new Exception("Error: Expected <username> <password> <email>");
+
+        }
+        return "New user created. User logged in.";
+    }
+
+    public String logIn(String... params) throws Exception{
         if (params.length >= 2){
             String username = params[0];
             String password = params[1];
-            server.signIn(username, password);
+            server.logIn(username, password);
             state = State.SIGNEDIN;
         }
         else {
@@ -81,6 +87,15 @@ public class ChessClient {
 
         }
         return "User logged in.";
+    }
+
+
+    public String logout() throws Exception {
+        assertSignedIn();
+        System.out.println("Logging out");
+        server.logout();
+        state = State.SIGNEDOUT;
+        return "Signed out";
     }
 
 }
