@@ -278,10 +278,10 @@ public class ChessClient {
         if (board.getPiece(pos) != null){
             ChessPiece piece = board.getPiece(pos);
             if (piece.getTeamColor() == ChessGame.TeamColor.WHITE){
-                out.print(SET_TEXT_COLOR_BLUE);
+                out.print(SET_TEXT_COLOR_BLACK);
             }
             else {
-                out.print(SET_TEXT_COLOR_BLACK);
+                out.print(SET_TEXT_COLOR_BLUE);
             }
             out.print(" " + getPieceType(piece) + " ");
         }
@@ -302,12 +302,12 @@ public class ChessClient {
     }
 
     private static void setGrey(PrintStream out) {
-        out.print(SET_BG_COLOR_LIGHT_GREY);
+        out.print(SET_BG_COLOR_WHITE);
         out.print(SET_TEXT_COLOR_BLUE);
     }
 
     private static void setWhite(PrintStream out) {
-        out.print(SET_BG_COLOR_WHITE);
+        out.print(SET_BG_COLOR_LIGHT_GREY);
         out.print(SET_TEXT_COLOR_BLACK);
     }
 
