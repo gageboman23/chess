@@ -125,19 +125,19 @@ public class ChessClient {
         if (params.length == 2) {
             String gameIndex = params[0];
             String playerColor = params[1];
-            int ID = 0;
+            int id = 0;
             List<Integer> storedIDs = new ArrayList<>();
             try {
-                ID = Integer.parseInt(gameIndex);
+                id = Integer.parseInt(gameIndex);
             } catch (NumberFormatException e) {
                 throw new Exception("Error processing game ID");
             }
             for (GameData gameData : gameDataList) {
                 storedIDs.add(gameData.gameID());
             }
-            if (storedIDs.contains(ID)) {
+            if (storedIDs.contains(id)) {
                 playerColor = playerColor.toUpperCase();
-                server.joinGame(ID, playerColor);
+                server.joinGame(id, playerColor);
                 displayGame(new ChessGame());
                 return "";
             } else {
@@ -161,17 +161,17 @@ public class ChessClient {
         assertLoggedIn();
         if (params.length == 1) {
             String gameIndex = params[0];
-            int ID = 0;
+            int id = 0;
             List<Integer> storedIDs = new ArrayList<>();
             try {
-                ID = Integer.parseInt(gameIndex);
+                id = Integer.parseInt(gameIndex);
             } catch (NumberFormatException e) {
                 throw new Exception("Error processing game ID");
             }
             for (GameData gameData : gameDataList) {
                 storedIDs.add(gameData.gameID());
             }
-            if (storedIDs.contains(ID)) {
+            if (storedIDs.contains(id)) {
                 //displayGame(new gameData);
                 return "";
             } else {
