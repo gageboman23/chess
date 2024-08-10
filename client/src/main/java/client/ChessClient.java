@@ -2,7 +2,6 @@ package client;
 
 import chess.*;
 import model.GameData;
-import responses.GameInfo;
 
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
@@ -17,7 +16,7 @@ public class ChessClient {
 
     private final ServerFacade server;
     private final String serverUrl;
-    private List<GameInfo> gameInfoList = new ArrayList<>();
+    private List<GameData> gameDataList = new ArrayList<>();
 
 
     private State state = State.SIGNEDOUT;
@@ -131,10 +130,10 @@ public class ChessClient {
             String playerColor = params[1];
             int ID = 0;
             ID = Integer.parseInt(gameIndex);
-            if (ID > gameInfoList.size()){
+            if (ID > gameDataList.size()){
                 throw new Exception("Game doesn't exist");
             }
-            int gameID = gameInfoList.get(ID-1).gameID();
+            int gameID = gameDataList.get(ID-1).gameID();
             playerColor = playerColor.toUpperCase();
             GameData gameData = server.joinGame(gameID, playerColor);
             displayGame(gameData);
@@ -147,7 +146,7 @@ public class ChessClient {
 
     public String listGames() throws Exception {
         assertLoggedIn();
-        Collection<GameInfo> gameList = server.listGames();
+        Collection<GameData> gameList = server.listGames();
         updateGameList(gameList);
         displayGameList();
         return "";
@@ -159,10 +158,10 @@ public class ChessClient {
             String gameIndex = params[0];
             int ID = 0;
             ID = Integer.parseInt(gameIndex);
-            if (ID > gameInfoList.size()){
+            if (ID > gameDataList.size()){
                 throw new Exception("Game doesn't exist");
             }
-            int gameID = gameInfoList.get(ID-1).gameID();
+            int gameID = gameDataList.get(ID-1).gameID();
             GameData gameData = server.observeGame(gameID);
             displayGame(gameData);
             return "";
@@ -323,18 +322,18 @@ public class ChessClient {
     }
 
 
-    private void updateGameList(Collection<GameInfo> gameList){
-        this.gameInfoList.clear();
-        for (GameInfo gameInfo : gameList) {
-            this.gameInfoList.add(gameInfo);
+    private void updateGameList(Collection<GameData> gameList){
+        this.gameDataList.clear();
+        for (GameData gameData : gameList) {
+            this.gameDataList.add(gameData);
         }
     }
 
     private void displayGameList(){
         System.out.print(SET_TEXT_COLOR_BLUE);
         System.out.print("Listing Games: \n");
-        for (int i = 1; i < gameInfoList.size()+1; i++){
-            GameInfo gameInfo = gameInfoList.get(i-1);
+        for (int i = 1; i < gameDataList.size()+1; i++){
+            GameData gameInfo = gameDataList.get(i-1);
             System.out.print(SET_TEXT_COLOR_GREEN);
             System.out.print(SET_TEXT_BOLD);
             System.out.print("  Game: " + i + "\n");

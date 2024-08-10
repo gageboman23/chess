@@ -34,19 +34,19 @@ public class ServerFacadeTests {
     }
 
     @Test
-    void register_Positive() throws Exception {
+    void registerPositive() throws Exception {
         var authToken = facade.register("player1", "password", "p1@email.com");
         assertNotNull(authToken);
         assertTrue(authToken.length() > 10);
     }
 
     @Test
-    void register_Negative() {
-        assertThrows(Exception.class, () -> facade.register("", "", ""));
+    void registerNegative() {
+        assertThrows(Exception.class, () -> facade.register(null, "", ""));
     }
 
     @Test
-    void logIn_Positive() throws Exception {
+    void logInPositive() throws Exception {
         facade.register("player2", "password", "p2@email.com");
         var authToken = facade.logIn("player2", "password");
         assertNotNull(authToken);
@@ -54,12 +54,12 @@ public class ServerFacadeTests {
     }
 
     @Test
-    void logIn_Negative() {
+    void loginNegative() {
         assertThrows(Exception.class, () -> facade.logIn("nonexistentUser", "wrongPassword"));
     }
 
     @Test
-    void logout_Positive() throws Exception {
+    void logoutPositive() throws Exception {
         facade.register("player3", "password", "p3@email.com");
         facade.logIn("player3", "password");
         facade.logout();
@@ -67,7 +67,7 @@ public class ServerFacadeTests {
     }
 
     @Test
-    void logout_Negative() throws Exception {
+    void logoutNegative() throws Exception {
         facade.register("player4", "password", "p4@email.com");
         facade.logIn("player4", "password");
         facade.logout();
@@ -75,19 +75,19 @@ public class ServerFacadeTests {
     }
 
     @Test
-    void createGame_Positive() throws Exception {
+    void createGamePositive() throws Exception {
         facade.register("player5", "password", "p5@email.com");
         facade.logIn("player5", "password");
         assertDoesNotThrow(() -> facade.createGame("NewGame"));
     }
 
     @Test
-    void createGame_Negative() {
+    void createGameNegative() {
         assertThrows(Exception.class, () -> facade.createGame("GameWithoutLogin"));
     }
 
     @Test
-    void joinGame_Positive() throws Exception {
+    void joinGamePositive() throws Exception {
         facade.register("player6", "password", "p6@email.com");
         facade.logIn("player6", "password");
         facade.createGame("JoinableGame");
@@ -96,27 +96,27 @@ public class ServerFacadeTests {
     }
 
     @Test
-    void joinGame_Negative() {
+    void joinGameNegative() {
         assertThrows(Exception.class, () -> facade.joinGame(-1, "black")); // Invalid game ID
     }
 
     @Test
-    void listGames_Positive() throws Exception {
+    void listGamesPositive() throws Exception {
         facade.register("player7", "password", "p7@email.com");
         facade.logIn("player7", "password");
         facade.createGame("ListableGame");
-        Collection<GameInfo> games = facade.listGames();
+        Collection<GameData> games = facade.listGames();
         assertNotNull(games);
         assertFalse(games.isEmpty());
     }
 
     @Test
-    void listGames_Negative() {
+    void listGamesNegative() {
         assertThrows(Exception.class, () -> facade.listGames()); // Should fail due to no auth token
     }
 
     @Test
-    void observeGame_Positive() throws Exception {
+    void observeGamePositive() throws Exception {
         facade.register("player8", "password", "p8@email.com");
         facade.logIn("player8", "password");
         facade.createGame("ObservableGame");
@@ -125,7 +125,7 @@ public class ServerFacadeTests {
     }
 
     @Test
-    void observeGame_Negative() {
+    void observeGameNegative() {
         assertThrows(Exception.class, () -> facade.observeGame(-1)); // Invalid game ID
     }
 }

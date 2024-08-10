@@ -55,7 +55,7 @@ public class ServerFacade {
         return this.makeRequest("PUT", path, req, GameData.class);
     }
 
-    public Collection<GameInfo> listGames() throws Exception {
+    public Collection<GameData> listGames() throws Exception {
         var path = "/game";
         ListGamesResponse res = this.makeRequest("GET", path, null, ListGamesResponse.class);
         return res.games();
