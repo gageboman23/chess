@@ -5,10 +5,7 @@ import model.GameData;
 
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 import static ui.EscapeSequences.*;
 
@@ -67,7 +64,7 @@ public class ChessClient {
     }
 
     public String register(String... params) throws Exception {
-        if (params.length >= 3) {
+        if (params.length == 3) {
             String username = params[0];
             String password = params[1];
             String email = params[2];
@@ -82,7 +79,7 @@ public class ChessClient {
     }
 
     public String logIn(String... params) throws Exception{
-        if (params.length >= 2){
+        if (params.length == 2){
             String username = params[0];
             String password = params[1];
             server.logIn(username, password);
@@ -112,7 +109,7 @@ public class ChessClient {
 
     public String createGame(String...params) throws Exception {
         assertLoggedIn();
-        if (params.length >= 1){
+        if (params.length == 1){
             String name = params[0];
             System.out.println("Creating Game: " + name);
             server.createGame(name);
@@ -125,19 +122,27 @@ public class ChessClient {
 
     public String joinGame(String...params) throws Exception {
         assertLoggedIn();
-        if (params.length >= 2) {
+        if (params.length == 2) {
             String gameIndex = params[0];
             String playerColor = params[1];
             int ID = 0;
-            ID = Integer.parseInt(gameIndex);
-            if (ID > gameDataList.size()){
-                throw new Exception("Game doesn't exist");
+            List<Integer> storedIDs = new ArrayList<>();
+            try {
+                ID = Integer.parseInt(gameIndex);
+            } catch (NumberFormatException e) {
+                throw new Exception("Error processing game ID");
             }
-            int gameID = gameDataList.get(ID-1).gameID();
-            playerColor = playerColor.toUpperCase();
-            GameData gameData = server.joinGame(gameID, playerColor);
-            displayGame(gameData);
-            return "";
+            for (GameData gameData : gameDataList) {
+                storedIDs.add(gameData.gameID());
+            }
+            if (storedIDs.contains(ID)) {
+                playerColor = playerColor.toUpperCase();
+                server.joinGame(ID, playerColor);
+                displayGame(new ChessGame());
+                return "";
+            } else {
+                throw new Exception("Game not found");
+            }
         }
         else {
             throw new Exception("Error: Expected <gameID>");
@@ -154,53 +159,36 @@ public class ChessClient {
 
     public String observeGame(String...params) throws Exception {
         assertLoggedIn();
-        if (params.length >= 1) {
+        if (params.length == 1) {
             String gameIndex = params[0];
             int ID = 0;
-            ID = Integer.parseInt(gameIndex);
-            if (ID > gameDataList.size()){
-                throw new Exception("Game doesn't exist");
+            List<Integer> storedIDs = new ArrayList<>();
+            try {
+                ID = Integer.parseInt(gameIndex);
+            } catch (NumberFormatException e) {
+                throw new Exception("Error processing game ID");
             }
-            int gameID = gameDataList.get(ID-1).gameID();
-            GameData gameData = server.observeGame(gameID);
-            displayGame(gameData);
-            return "";
-        }
-        else {
+            for (GameData gameData : gameDataList) {
+                storedIDs.add(gameData.gameID());
+            }
+            if (storedIDs.contains(ID)) {
+                //displayGame(new gameData);
+                return "";
+            } else {
+                throw new Exception("Error: Unexpected <gameID>");
+            }
+        } else {
             throw new Exception("Error: Expected <gameID>");
         }
     }
 
 
-
-
-
-
-    public void displayGame(GameData gameData){
+    public void displayGame(ChessGame chessGame){
         var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
-        var output = gameData.gameName() + ":\n";
-        String wUsername = gameData.whiteUsername();
-        String bUsername = gameData.blackUsername();
-        if (wUsername == null){
-            wUsername = "No player added";
-        }
-        if (bUsername == null){
-            bUsername = "No player added";
-        }
-        output += "White Player: " + wUsername + "\n";
-        output += "Black Player: " + bUsername + "\n";
-        if (gameData.game().getTeamTurn() == ChessGame.TeamColor.WHITE){
-            output += wUsername + "'s turn to move";
-        }
-        else {
-            output += bUsername + "'s turn to move\n\n";
-        }
         out.print(SET_TEXT_COLOR_MAGENTA);
-        out.print(output);
         out.print("\n");
-        drawBoard(out, gameData.game());
-        drawBoardBlack(out, gameData.game());
-
+        drawBoard(out, chessGame);
+        drawBoardBlack(out, chessGame);
     }
 
     private static void drawBoard(PrintStream out, ChessGame game) {

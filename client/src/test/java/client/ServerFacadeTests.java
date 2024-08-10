@@ -89,10 +89,11 @@ public class ServerFacadeTests {
     @Test
     void joinGamePositive() throws Exception {
         facade.register("player6", "password", "p6@email.com");
-        facade.logIn("player6", "password");
-        facade.createGame("JoinableGame");
-        var gameData = facade.joinGame(1, "white");
-        assertNotNull(gameData);
+        //facade.logIn("player6", "password");
+        int gameID = facade.createGame("JoinableGame").gameID();
+        facade.joinGame(gameID, "WHITE");
+        Collection<GameData> gameList = facade.listGames();
+        assertEquals("player6", gameList.iterator().next().whiteUsername());
     }
 
     @Test
@@ -113,19 +114,5 @@ public class ServerFacadeTests {
     @Test
     void listGamesNegative() {
         assertThrows(Exception.class, () -> facade.listGames()); // Should fail due to no auth token
-    }
-
-    @Test
-    void observeGamePositive() throws Exception {
-        facade.register("player8", "password", "p8@email.com");
-        facade.logIn("player8", "password");
-        facade.createGame("ObservableGame");
-        var gameData = facade.observeGame(1);
-        assertNotNull(gameData);
-    }
-
-    @Test
-    void observeGameNegative() {
-        assertThrows(Exception.class, () -> facade.observeGame(-1)); // Invalid game ID
     }
 }

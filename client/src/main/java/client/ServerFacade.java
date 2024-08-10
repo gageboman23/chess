@@ -43,28 +43,23 @@ public class ServerFacade {
         authToken = null;
     }
 
-    public void createGame(String name) throws Exception {
+    public CreateGameResponse createGame(String name) throws Exception {
         var path = "/game";
         GameData game = new GameData(0, null, null, name, null);
         CreateGameResponse res = this.makeRequest("POST", path, game, CreateGameResponse.class);
+        return res;
     }
 
-    public GameData joinGame(int gameID, String color) throws Exception {
+    public void joinGame(int gameID, String color) throws Exception {
         var path = "/game";
         var req = new JoinGameRequest(color, gameID);
-        return this.makeRequest("PUT", path, req, GameData.class);
+        this.makeRequest("PUT", path, req, GameData.class);
     }
 
     public Collection<GameData> listGames() throws Exception {
         var path = "/game";
         ListGamesResponse res = this.makeRequest("GET", path, null, ListGamesResponse.class);
         return res.games();
-    }
-
-    public GameData observeGame(int gameID) throws Exception {
-        var path = "/game";
-        var req = new JoinGameRequest("empty", gameID);
-        return this.makeRequest("PUT", path, req, GameData.class);
     }
 
     public void clearDB() throws Exception {
