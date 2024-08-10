@@ -9,6 +9,5 @@ public class Main {
         int port = 8080;
         Server server = new Server();
         server.run(port);
-
     }
 }

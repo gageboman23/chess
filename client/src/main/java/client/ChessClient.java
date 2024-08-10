@@ -30,12 +30,12 @@ public class ChessClient {
             var params = Arrays.copyOfRange(tokens, 1, tokens.length);
             return switch (cmd) {
                 case "register" -> register(params);
-                case "logIn" -> logIn(params);
-                case "logOut" -> logout();
-                case "createGame" -> createGame(params);
-                case "joinGame" -> joinGame(params);
-                case "listGames" -> listGames();
-                case "observeGame" -> observeGame(params);
+                case "login" -> logIn(params);
+                case "logout" -> logout();
+                case "creategame" -> createGame(params);
+                case "joingame" -> joinGame(params);
+                case "listgames" -> listGames();
+                case "observegame" -> observeGame(params);
                 case "quit" -> "quit";
                 default -> help();
             };
@@ -125,19 +125,20 @@ public class ChessClient {
         if (params.length == 2) {
             String gameIndex = params[0];
             String playerColor = params[1];
-            int id = 0;
+            int index = 0;
             List<Integer> storedIDs = new ArrayList<>();
             try {
-                id = Integer.parseInt(gameIndex);
+                index = Integer.parseInt(gameIndex);
             } catch (NumberFormatException e) {
                 throw new Exception("Error processing game ID");
             }
             for (GameData gameData : gameDataList) {
                 storedIDs.add(gameData.gameID());
             }
-            if (storedIDs.contains(id)) {
+            int actualID = gameDataList.get(index-1).gameID();
+            if (storedIDs.contains(actualID)) {
                 playerColor = playerColor.toUpperCase();
-                server.joinGame(id, playerColor);
+                server.joinGame(actualID, playerColor);
                 displayGame(new ChessGame());
                 return "";
             } else {
@@ -161,18 +162,19 @@ public class ChessClient {
         assertLoggedIn();
         if (params.length == 1) {
             String gameIndex = params[0];
-            int id = 0;
+            int index = 0;
             List<Integer> storedIDs = new ArrayList<>();
             try {
-                id = Integer.parseInt(gameIndex);
+                index = Integer.parseInt(gameIndex);
             } catch (NumberFormatException e) {
                 throw new Exception("Error processing game ID");
             }
             for (GameData gameData : gameDataList) {
                 storedIDs.add(gameData.gameID());
             }
-            if (storedIDs.contains(id)) {
-                //displayGame(new gameData);
+            int actualID = gameDataList.get(index-1).gameID();
+            if (storedIDs.contains(actualID)) {
+                displayGame(new ChessGame());
                 return "";
             } else {
                 throw new Exception("Error: Unexpected <gameID>");
@@ -194,33 +196,33 @@ public class ChessClient {
     private static void drawBoard(PrintStream out, ChessGame game) {
         out.print(RESET_BG_COLOR);
         out.print(SET_TEXT_COLOR_WHITE);
-        out.print("  A ");
-        out.print(" B ");
-        out.print(" C ");
-        out.print(" D ");
-        out.print(" E ");
-        out.print(" F ");
+        out.print("  H ");
         out.print(" G ");
-        out.print(" H \n");
+        out.print(" F ");
+        out.print(" E ");
+        out.print(" D ");
+        out.print(" C ");
+        out.print(" B ");
+        out.print(" A \n");
         for (int j = 1; j < 9; j++){
             out.print(SET_TEXT_COLOR_WHITE);
             out.print(j);
             for (int i = 1; i < 9; i++) {
                 if ((j % 2) != 0){
                     if ((i % 2) == 0){
-                        setYellow(out);
+                        setWhite(out);
                     }
                     else {
-                        setBrown(out);
+                        setGrey(out);
                     }
                     evalBoard(out, game, j, i);
                 }
                 else {
                     if ((i % 2) == 0){
-                        setBrown(out);
+                        setGrey(out);
                     }
                     else {
-                        setYellow(out);
+                        setWhite(out);
                     }
                     evalBoard(out, game, j, i);
                 }
@@ -239,19 +241,19 @@ public class ChessClient {
             for (int i = 1; i < 9; i++) {
                 if ((j % 2) != 0){
                     if ((i % 2) == 0){
-                        setYellow(out);
+                        setWhite(out);
                     }
                     else {
-                        setBrown(out);
+                        setGrey(out);
                     }
                     evalBoard(out, game, 9-j, 9-i);
                 }
                 else {
                     if ((i % 2) == 0){
-                        setBrown(out);
+                        setGrey(out);
                     }
                     else {
-                        setYellow(out);
+                        setWhite(out);
                     }
                     evalBoard(out, game, 9-j, 9-i);
                 }
@@ -259,14 +261,14 @@ public class ChessClient {
             out.print(RESET_BG_COLOR);
         }
         out.print(SET_TEXT_COLOR_WHITE);
-        out.print("\n  H ");
-        out.print(" G ");
-        out.print(" F ");
-        out.print(" E ");
-        out.print(" D ");
-        out.print(" C ");
+        out.print("\n  A ");
         out.print(" B ");
-        out.print(" A ");
+        out.print(" C ");
+        out.print(" D ");
+        out.print(" E ");
+        out.print(" F ");
+        out.print(" G ");
+        out.print(" H ");
         out.print("\n");
     }
 
@@ -276,7 +278,7 @@ public class ChessClient {
         if (board.getPiece(pos) != null){
             ChessPiece piece = board.getPiece(pos);
             if (piece.getTeamColor() == ChessGame.TeamColor.WHITE){
-                out.print(SET_TEXT_COLOR_WHITE);
+                out.print(SET_TEXT_COLOR_BLUE);
             }
             else {
                 out.print(SET_TEXT_COLOR_BLACK);
@@ -299,14 +301,14 @@ public class ChessClient {
         };
     }
 
-    private static void setBrown(PrintStream out) {
-        out.print(SET_BG_COLOR_DARK_GREY);
-        out.print(SET_TEXT_COLOR_WHITE);
+    private static void setGrey(PrintStream out) {
+        out.print(SET_BG_COLOR_LIGHT_GREY);
+        out.print(SET_TEXT_COLOR_BLUE);
     }
 
-    private static void setYellow(PrintStream out) {
-        out.print(SET_BG_COLOR_DARK_GREY);
-        out.print(SET_TEXT_COLOR_WHITE);
+    private static void setWhite(PrintStream out) {
+        out.print(SET_BG_COLOR_WHITE);
+        out.print(SET_TEXT_COLOR_BLACK);
     }
 
 
