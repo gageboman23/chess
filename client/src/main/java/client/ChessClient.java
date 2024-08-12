@@ -196,17 +196,17 @@ public class ChessClient {
     private static void drawBoard(PrintStream out, ChessGame game) {
         out.print(RESET_BG_COLOR);
         out.print(SET_TEXT_COLOR_WHITE);
-        out.print("  H ");
-        out.print(" G ");
-        out.print(" F ");
-        out.print(" E ");
-        out.print(" D ");
-        out.print(" C ");
+        out.print("  A ");
         out.print(" B ");
-        out.print(" A \n");
+        out.print(" C ");
+        out.print(" D ");
+        out.print(" E ");
+        out.print(" F ");
+        out.print(" G ");
+        out.print(" H \n");
         for (int j = 1; j < 9; j++){
             out.print(SET_TEXT_COLOR_WHITE);
-            out.print(j);
+            out.print(9-j);
             for (int i = 1; i < 9; i++) {
                 if ((j % 2) != 0){
                     if ((i % 2) == 0){
@@ -237,7 +237,7 @@ public class ChessClient {
         for (int j = 1; j < 9; j++){
             out.print("\n");
             out.print(SET_TEXT_COLOR_WHITE);
-            out.print(9-j);
+            out.print(j);
             for (int i = 1; i < 9; i++) {
                 if ((j % 2) != 0){
                     if ((i % 2) == 0){
@@ -261,14 +261,14 @@ public class ChessClient {
             out.print(RESET_BG_COLOR);
         }
         out.print(SET_TEXT_COLOR_WHITE);
-        out.print("\n  A ");
-        out.print(" B ");
-        out.print(" C ");
-        out.print(" D ");
-        out.print(" E ");
-        out.print(" F ");
+        out.print("\n  H ");
         out.print(" G ");
-        out.print(" H ");
+        out.print(" F ");
+        out.print(" E ");
+        out.print(" D ");
+        out.print(" C ");
+        out.print(" B ");
+        out.print(" A ");
         out.print("\n");
     }
 
